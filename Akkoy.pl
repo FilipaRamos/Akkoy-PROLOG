@@ -2,13 +2,39 @@
 
 %%%%%%%% RETORNA A LISTA DE TAMANHO MAIOR %%%%%%%%%
 
-getMaxList(L, R, Length, Length).
-getMaxList(L, R, C, Length) :- C < Length, nth1(C, L, X), length(X, Tamanho), append(R, Tamanho, L2), write('chegou aqui'),
-								C2 is C + 1, getMaxList(L, L2, C2, Length). 
+getListSizesAux(_, [], 0).
+getListSizesAux(L, [HEAD | TAILS], Indice) :- Indice > 0, nth1(Indice, L, X), length(X, Tamanho), HEAD is Tamanho,
+								Length2 is Indice - 1, getListSizesAux(L, TAILS, Length2). 
 
-getMax(L, N, Coluna) :- getMaxList(L, R, 0, N), select_max(Elem, R, Y), nth1(Elem, R, Indice), nth1(Indice, L, Coluna). 
+getListSizes(L, R, N):- getListSizesAux(L, R1, N),reverse(R1,R).
+
+getMax(L, N, Coluna) :- getListSizes(L, R, N), write(R), select_max(Elem, R, Y), nth1(Indice, R, Elem), nth1(Indice, L, Coluna). 
 
 
 
 %%%%%%%% MENU %%%%%%%%%%
 
+logo :- write('        |||        '), nl,
+		write('       |||||       '), nl,
+		write('      |||||||      '), nl,
+		write('     |||||||||     '), nl,
+		write('    || AKKOY ||    '), nl,
+		write('   || PUZZLES ||   '), nl,
+		write('  |||||||||||||||  '), nl,
+		write(' ||||||||||||||||| '), nl,
+		write('||||| 1. EASY |||||'), nl,
+		write(' ||| 2. MEDIUM ||| '), nl,
+		write('  ||| 3. HARD |||  '), nl,
+		write('   |||||||||||||   '), nl,
+		write('    |||||||||||    '), nl,
+		write('     |||||||||     '), nl,
+		write('      |||||||      '), nl,
+		write('       |||||       '), nl,
+		write('        |||        '). 
+
+menu :- write('\33\[2J'), logo, write('Choose the difficulty of the puzzle: '), 
+		read(A), A < 4, A > 0, choice(A).
+
+choice(1).
+choice(2).
+choice(3).

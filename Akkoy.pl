@@ -1,39 +1,20 @@
 :- use_module(library(lists)).
 
-%%% GUARDA O TAMANHO MÁXIMO DE NÚMEROS DE TODAS AS COLUNAS EX: 3, [1,1], [3,4,2] numbersSize EQUIVALE AO NR 3 %%%
-:- dynamic numbersSize/1.
+%% EASY -- > BLACK [[3,1,'  ', 1, '  ',4,1], ['  ', 1, '  ', 1, '  ', 1, '  '], ['  ', '  ', '  ', 1, '  ', '  ', '  ']] %%
+%%%%%%% -- > WHITE [['  ',1,1,'  ','  ',1,'  '],[3,2,1,2,1,1,3],[1,1,2,1,3,1,3]] %%
 
-:- dynamic firstElement/1.
+%%% WRITE THE NUMBERS %%%
 
-%%%%%%%% RETORNA A LISTA DE TAMANHO MAIOR %%%%%%%%%
+writeElement(List, LengthList, LengthList).
+writeElement(List, LengthList, Counter) :- nth0(Counter, List, Elem), write(Elem), write(' '), NewCounter is Counter + 1, writeElement(List, LengthList, NewCounter).
 
-getListSizesAux(_, [], 0).
-getListSizesAux(L, [HEAD | TAILS], Indice) :- Indice > 0, nth1(Indice, L, X), length(X, Tamanho), HEAD is Tamanho,
-								Length2 is Indice - 1, getListSizesAux(L, TAILS, Length2). 
+%% WRITE THE RESTRICTIONS FOR BLACK SQUARES %%
+writeBlackRes(Res, 0).
+writeBlackRes(Res, LengthRes) :- LengthRes > 0, nth1(LengthRes, Res, Result), length(Result, LRes), writeElement(Result, LRes, 0), nl, 
+							NewLength is LengthRes - 1, writeBlackRes(Res, NewLength).
 
-getListSizes(L, R, Llength):- getListSizesAux(L, R1, Llength), reverse(R1,R), 
-							select_max(MaxSize, R, _Y), assert(numbersSize(MaxSize)).
-
-getMaxSizeList(L, Llength, Coluna) :- getListSizes(L, R, Llength), select_max(Elem, R, _Y), 
-							nth1(Indice, R, Elem), nth1(Indice, L, Coluna), 
-							nth1(1, Coluna, FirstElem), assert(firstElement(FirstElem)). 
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-%%%%%%% ESCREVER OS NÚMEROS %%%%%%%%
-
-%%% L É A LISTA QUE GUARDA AS RESTRIÇÕES DAS COLUNAS %%%
-
-%% ESCREVE ESPAÇOS ATÉ CHEGAR À COLUNA RESPETIVA
-writeSpaces(0).
-writeSpaces(IndexList) :- write('  '), I2 is IndexList - 1, writeSpaces(I2).
-
-getfirstElem(L, Llength, ListaElim) :- getMaxSizeList(L, Llength, Coluna), 
-								retract(firstElement(First)), delete(Coluna, First, ListaElim).
-
-writeNumbers([]).
-writeNumbers(L) :- length(L, Llength), getfirstElem(L, Llength, ListaElim), write(ListaElim), retract(numbersSize(Index)), 
-				writeSpaces(Index), retract(firstElement(First)), write(First), writeNumbers(ListaElim).
+%% WRITE THE RESTRICTIONS FOR WHITE SQUARES %%
+writeWhiteRes(Res) :- write(Res).
 
 %%%%%%%% MENU %%%%%%%%%%
 
@@ -58,6 +39,9 @@ logo :- write('        |||        '), nl,
 menu :- write('\33\[2J'), logo, write('Choose the difficulty of the puzzle: '), 
 		read(A), A < 4, A > 0, choice(A).
 
-choice(1).
+choice(1) :- easy([[3,1,'  ', 1, '  ',4,1], ['  ', 1, '  ', 1, '  ', 1, '  '], ['  ', '  ', '  ', 1, '  ', '  ', '  ']], [['  ',1,1,'  ','  ',1,'  '],[3,2,1,2,1,1,3],[1,1,2,1,3,1,3]], 3).
 choice(2).
 choice(3).
+
+
+easy(ResBlack, ResWhite, SizeBlack) :- writeBlackRes(ResBlack, SizeBlack).

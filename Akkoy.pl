@@ -32,7 +32,7 @@ getfirstElem(L, Llength, ListaElim) :- getMaxSizeList(L, Llength, Coluna),
 								retract(firstElement(First)), delete(Coluna, First, ListaElim).
 
 writeNumbers([]).
-writeNumbers(L) :- length(L, Llength), getfirstElem(L, Llength, ListaElim), retract(numbersSize(Index)), 
+writeNumbers(L) :- length(L, Llength), getfirstElem(L, Llength, ListaElim), write(ListaElim), retract(numbersSize(Index)), 
 				writeSpaces(Index), retract(firstElement(First)), write(First), writeNumbers(ListaElim).
 
 %%%%%%%% MENU %%%%%%%%%%

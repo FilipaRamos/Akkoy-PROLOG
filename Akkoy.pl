@@ -10,11 +10,14 @@ writeElement(List, LengthList, Counter) :- nth0(Counter, List, Elem), write(Elem
 
 %% WRITE THE RESTRICTIONS FOR BLACK SQUARES %%
 writeBlackRes(Res, 0).
-writeBlackRes(Res, LengthRes) :- LengthRes > 0, nth1(LengthRes, Res, Result), length(Result, LRes), writeElement(Result, LRes, 0), nl, 
+writeBlackRes(Res, LengthRes) :- LengthRes > 0, nth1(LengthRes, Res, Result), length(Result, LRes), write(' '), writeElement(Result, LRes, 0), nl, 
 							NewLength is LengthRes - 1, writeBlackRes(Res, NewLength).
 
 %% WRITE THE RESTRICTIONS FOR WHITE SQUARES %%
-writeWhiteRes(Res) :- write(Res).
+writeWhiteRes(Res, LengthRes, LengthRes).
+writeWhiteRes(Res, LengthRes, Counter) :- nth0(Counter, Res, Result), length(Result, LRes), write(' '),
+					writeElement(Result, LRes, 0), nl, NewCounter is Counter + 1, writeWhiteRes(Res, LengthRes, NewCounter).
+
 
 %%%%%%%% MENU %%%%%%%%%%
 
@@ -39,9 +42,10 @@ logo :- write('        |||        '), nl,
 menu :- write('\33\[2J'), logo, write('Choose the difficulty of the puzzle: '), 
 		read(A), A < 4, A > 0, choice(A).
 
-choice(1) :- easy([[3,1,'  ', 1, '  ',4,1], ['  ', 1, '  ', 1, '  ', 1, '  '], ['  ', '  ', '  ', 1, '  ', '  ', '  ']], [['  ',1,1,'  ','  ',1,'  '],[3,2,1,2,1,1,3],[1,1,2,1,3,1,3]], 3).
+choice(1) :- write('\33\[2J'), nl, easy([[3,1,' ', 1, ' ',4,1], [' ', 1, ' ', 1, ' ', 1, ' '], [' ', ' ', ' ', 1, ' ', ' ', ' ']], 
+	[[1,3,' '],[1,2,1],[2,1,1], [1,2,' '], [3,1,' '], [1,1,1], [3,3,' ']], 3, 7).
 choice(2).
 choice(3).
 
 
-easy(ResBlack, ResWhite, SizeBlack) :- writeBlackRes(ResBlack, SizeBlack).
+easy(ResBlack, ResWhite, SizeBlack, SizeWhite) :- writeBlackRes(ResBlack, SizeBlack), writeWhiteRes(ResWhite, SizeWhite, 0).

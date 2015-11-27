@@ -26,10 +26,6 @@ square(' * ').
 %%	| * | * |   | * |   |   %%
 %% 	 -------------------    %%
 
-%% GET A LINE %%
-
-getBoardLine(Index, Elem) :- retract(board(B)), nth0(Index, B, Elem), assert(board(B)).
-
 %% DISPLAY A BOARD ELEMENT %%
 
 displayBoardElem(Index, NrLine) :- retract(board(B)), nth0(NrLine, B, Line), nth0(Index, Line, Elem), write(Elem), assert(board(B)).
@@ -45,12 +41,12 @@ writeLine(Lines) :- Lines > 0, write('-'), NewNr is Lines - 1, writeLine(NewNr).
 
 %% DISPLAY VERTICAL LINES %%
 
-writeDashes(Size, NrLine, Size).
-writeDashes(Size, NrLine, Index) :- Index < Size, write('|'), displayBoardElem(Index, NrLine), 
-			NewIndex is Index + 1, writeDashes(Size, NrLine, NewIndex).
+writeDashes(Size, _NrLine, Size).
+writeDashes(Size, _NrLine, Index) :- Index < Size, write('|'), displayBoardElem(Index, _NrLine), 
+			NewIndex is Index + 1, writeDashes(Size, _NrLine, NewIndex).
 
 createList(0,[]).
-createList(Size, [H|T]) :- Size > 0, NewSize is Size - 1, H = ' a ', 
+createList(Size, [H|T]) :- Size > 0, NewSize is Size - 1, H = '   ', 
 					createList(NewSize, T).
 
 createMatrix(0, [], _MatLength).
@@ -61,10 +57,9 @@ createBoard(Size) :- createMatrix(Size, Board, Size), assert(board(Board)).
 
 %% DISPLAY BOARD %%
 
-displayBoard(0, NrLine).
+displayBoard(Size, Size) :- displayLine(Size).
 displayBoard(Size, NrLine) :- displayLine(Size), writeDashes(Size, NrLine, 0), 
-							write('|'), nl, NewLine is NrLine + 1,
-							NewSize is Size - 1, displayBoard(NewSize, NewLine).
+							write('|'), nl, NewLine is NrLine + 1, displayBoard(Size, NewLine).
 
 %%% WRITE THE NUMBERS %%%
 
@@ -80,7 +75,6 @@ writeBlackRes(_Res, LengthRes) :- LengthRes > 0, nth1(LengthRes, _Res, Result), 
 writeWhiteRes(_Res, LengthRes, LengthRes).
 writeWhiteRes(_Res, LengthRes, Counter) :- nth0(Counter, _Res, Result), length(Result, LRes), write(' '),
 					writeElement(Result, LRes, 0), nl, NewCounter is Counter + 1, writeWhiteRes(_Res, LengthRes, NewCounter).
-
 
 %%%%%%%% MENU %%%%%%%%%%
 
@@ -138,6 +132,8 @@ choice(2) :- assertsResNormal, write('\33\[2J'), nl, retract(horizontalRestNorma
 			drawRes(Horizontal, Vertical, 3, 7).
 choice(3).
 
-%% DRAW RESTRICTIONS %%
-drawRes(ResBlack, ResWhite, SizeBlack, SizeWhite) :- writeBlackRes(ResBlack, SizeBlack), writeWhiteRes(ResWhite, SizeWhite, 0).
+%% DISPLAY BOARD + NUMBERS %%
+   %% DRAW RESTRICTIONS %%
+
+drawRes(ResBlack, ResWhite, SizeBlack, SizeWhite) :- writeBlackRes(ResBlack, SizeBlack), createBoard(5), displayBoard(5, 0), writeWhiteRes(ResWhite, SizeWhite, 0).
 

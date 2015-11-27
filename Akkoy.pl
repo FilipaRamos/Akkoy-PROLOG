@@ -57,24 +57,23 @@ createBoard(Size) :- createMatrix(Size, Board, Size), assert(board(Board)).
 
 %% DISPLAY BOARD %%
 
-displayBoard(Size, Size) :- displayLine(Size).
-displayBoard(Size, NrLine) :- displayLine(Size), writeDashes(Size, NrLine, 0), 
-							write('|'), nl, NewLine is NrLine + 1, displayBoard(Size, NewLine).
+displayBoard(Size, Size, _Res) :- displayLine(Size).
+displayBoard(Size, NrLine, _Res) :- displayLine(Size), writeDashes(Size, NrLine, 0), 
+							write('|'), writeWhiteRes(_Res, NrLine), NewLine is NrLine + 1, displayBoard(Size, NewLine, _Res).
 
 %%% WRITE THE NUMBERS %%%
 
 writeElement(_List, LengthList, LengthList).
-writeElement(_List, LengthList, Counter) :- nth0(Counter, _List, Elem), write(Elem), write(' '), NewCounter is Counter + 1, writeElement(_List, LengthList, NewCounter).
+writeElement(_List, LengthList, Counter) :- nth0(Counter, _List, Elem), write(Elem), write('   '), NewCounter is Counter + 1, writeElement(_List, LengthList, NewCounter).
 
 %% WRITE THE RESTRICTIONS FOR BLACK SQUARES %%
 writeBlackRes(_Res, 0).
-writeBlackRes(_Res, LengthRes) :- LengthRes > 0, nth1(LengthRes, _Res, Result), length(Result, LRes), write(' '), writeElement(Result, LRes, 0), nl, 
+writeBlackRes(_Res, LengthRes) :- write('  '), !, LengthRes > 0, nth1(LengthRes, _Res, Result), length(Result, LRes), writeElement(Result, LRes, 0), nl, 
 							NewLength is LengthRes - 1, writeBlackRes(_Res, NewLength).
 
 %% WRITE THE RESTRICTIONS FOR WHITE SQUARES %%
-writeWhiteRes(_Res, LengthRes, LengthRes).
-writeWhiteRes(_Res, LengthRes, Counter) :- nth0(Counter, _Res, Result), length(Result, LRes), write(' '),
-					writeElement(Result, LRes, 0), nl, NewCounter is Counter + 1, writeWhiteRes(_Res, LengthRes, NewCounter).
+writeWhiteRes(_Res, NrLine) :- nth0(NrLine, _Res, Result), length(Result, LRes), write(' '),
+					writeElement(Result, LRes, 0), nl.
 
 %%%%%%%% MENU %%%%%%%%%%
 
@@ -135,5 +134,5 @@ choice(3).
 %% DISPLAY BOARD + NUMBERS %%
    %% DRAW RESTRICTIONS %%
 
-drawRes(ResBlack, ResWhite, SizeBlack, SizeWhite) :- writeBlackRes(ResBlack, SizeBlack), createBoard(5), displayBoard(5, 0), writeWhiteRes(ResWhite, SizeWhite, 0).
+drawRes(ResBlack, ResWhite, SizeBlack, BoardSize) :- writeBlackRes(ResBlack, SizeBlack), createBoard(BoardSize), displayBoard(BoardSize, 0, ResWhite).
 

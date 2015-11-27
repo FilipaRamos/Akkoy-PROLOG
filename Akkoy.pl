@@ -26,32 +26,45 @@ square(' * ').
 %%	| * | * |   | * |   |   %%
 %% 	 -------------------    %%
 
+%% GET A LINE %%
+
+getBoardLine(Index, Elem) :- retract(board(B)), nth0(Index, B, Elem), assert(board(B)).
+
+%% DISPLAY A BOARD ELEMENT %%
+
+displayBoardElem(Index, NrLine) :- retract(board(B)), nth0(NrLine, B, Line), nth0(Index, Line, Elem), write(Elem), assert(board(B)).
+
 %% DISPLAY HORIZONTAL LINES %%
 
 countLines(Size, Lines) :- Dash is Size - 1, HalfLine is 3*Size, Lines is Dash + HalfLine.
 
-displayLines(Size) :- countLines(Size, Lines), write(' '), writeLine(Lines), nl.
+displayLine(Size) :- countLines(Size, Lines), write(' '), writeLine(Lines), nl.
 
-writeLines(0).
-writeLines(Lines) :- Lines > 0, write('-'), NewNr is Lines - 1, writeLines(NewNr).
+writeLine(0).
+writeLine(Lines) :- Lines > 0, write('-'), NewNr is Lines - 1, writeLine(NewNr).
 
 %% DISPLAY VERTICAL LINES %%
 
-displayDashes(Size, Board, Counter).
-displayDashes(Size, Board, Counter) :- PlusSize is Size + 1, writeDashes(PlusSize).
-
-writeDashes(0).
-writeDashes(PlusSize) :- write('|'), NewSize is PlusSize - 1, writeDashes(NewSize).
+writeDashes(Size, NrLine, Size).
+writeDashes(Size, NrLine, Index) :- Index < Size, write('|'), displayBoardElem(Index, NrLine), 
+			NewIndex is Index + 1, writeDashes(Size, NrLine, NewIndex).
 
 createList(0,[]).
-createList(Size, [H|T]) :- Size > 0, NewSize is Size - 1, H = square('   '), 
+createList(Size, [H|T]) :- Size > 0, NewSize is Size - 1, H = ' a ', 
 					createList(NewSize, T).
 
 createMatrix(0, [], _MatLength).
 createMatrix(Size, [H|T], _MatLength) :- Size > 0, NewSize is Size - 1, createList(_MatLength, List),
 					H = List, createMatrix(NewSize, T, _MatLength).
 
-createBoard(Size) :- createMatrix(Size, Board, Size), assert(boardEasy(Board)).
+createBoard(Size) :- createMatrix(Size, Board, Size), assert(board(Board)).
+
+%% DISPLAY BOARD %%
+
+displayBoard(0, NrLine).
+displayBoard(Size, NrLine) :- displayLine(Size), writeDashes(Size, NrLine, 0), 
+							write('|'), nl, NewLine is NrLine + 1,
+							NewSize is Size - 1, displayBoard(NewSize, NewLine).
 
 %%% WRITE THE NUMBERS %%%
 

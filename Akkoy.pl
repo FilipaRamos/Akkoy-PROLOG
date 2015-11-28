@@ -6,6 +6,8 @@
 :- dynamic verticalRestNormal/1.
 :- dynamic horizontalRestEasy/1.
 :- dynamic verticalRestEasy/1.
+:- dynamic horizontalRestHard/1.
+:- dynamic verticalRestHard/1.
 :- dynamic board/1.
 
 %% SQUARE REPRESENTA UM QUADRADO DO TABULEIRO E %%
@@ -97,6 +99,17 @@ assertsResNormal :- assert(horizontalRestNormal([
 		   						[3,3,' ']
 		   						])).
 
+assertsResHard :- assert(horizontalRestHard([
+								[1,1,3,3,3,1,4,1,3],
+								[1,1,2,' ',2,1,3,' ',2]
+								])),
+			assert(verticalRestHard([
+								[3,2,1, ' '], [2,1,1,1],
+								[2,1,1,1], [3,1,1,1],
+								[2,2,1,' '], [3,2,1,' '],
+								[1,1,1,1], [2,1,1,1], [4,3]
+								])).
+
 
 logo :- write('        |||        '), nl,
 		write('       |||||       '), nl,
@@ -129,7 +142,9 @@ choice(1) :- assertsResEasy, write('\33\[2J'), nl, retract(horizontalRestEasy(Ho
 choice(2) :- assertsResNormal, write('\33\[2J'), nl, retract(horizontalRestNormal(Horizontal)),
 			retract(verticalRestNormal(Vertical)), 
 			drawRes(Horizontal, Vertical, 3, 7).
-choice(3).
+choice(3) :- assertsResHard, write('\33\[2J'), nl, retract(horizontalRestHard(Horizontal)),
+			retract(verticalRestHard(Vertical)),
+			drawRes(Horizontal, Vertical, 2, 9).
 
 %% DISPLAY BOARD + NUMBERS %%
    %% DRAW RESTRICTIONS %%

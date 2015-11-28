@@ -1,0 +1,1 @@
+r :- read_string(Command, "\n", "\r", End, String), write(String), write('|||'), write(Command).

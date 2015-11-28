@@ -10,13 +10,7 @@
 :- dynamic verticalRestHard/1.
 :- dynamic board/1.
 :- dynamic sum/1.
-
-%% SQUARE REPRESENTA UM QUADRADO DO TABULEIRO E %%
-%% PODE SER UM ESPAÇO EM BRANCO OU UM ASTERISCO %% 
-%% QUE REPRESENTA OS QUADRADOS PINTADOS %%
-
-square('   ').
-square(' * ').
+:- dynamic blackSquares/1.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -78,6 +72,22 @@ writeBlackRes(_Res, LengthRes) :- write('  '), !, LengthRes > 0, nth1(LengthRes,
 writeWhiteRes(_Res, NrLine) :- nth0(NrLine, _Res, Result), length(Result, LRes), write(' '),
 					writeElement(Result, LRes, 0), nl.
 
+%% REPLACE BOARD ELEMENTS %%
+%% COUNT STARTS AT INDEX 0 %%
+
+replace([_|T], 0, X, [X|T]).
+replace([H|T], Index, X, [H|R]):- Index > -1, NI is Index-1, replace(T, NI, X, R), !.
+replace(L, _, _, L).
+
+%% A PLAY %%
+
+aPlay(X, Y, Elem) :- retract(board(Board)), nth1(X, Board, Line),
+				Index is Y - 1, replace(Line, Index, Elem, NewLine), 
+				NewX is X - 1, replace(Board, NewX, NewLine, NewBoard), 
+				assert(board(NewBoard)).
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 %%%%%%%% MENU %%%%%%%%%%
 
 assertsResEasy :- assert(horizontalRestEasy([
@@ -111,7 +121,7 @@ assertsResHard :- assert(horizontalRestHard([
 								[1,1,1,1], [2,1,1,1], [4,3]
 								])).
 
-assertSum :- assert(sum(0)).
+assertSum :- assert(sum(0)), assert(blackSquares(0)).
 
 
 logo :- write('        |||        '), nl,
@@ -139,22 +149,119 @@ menu :- write('\33\[2J'), logo, write('Choose the difficulty of the puzzle: '),
 %% CHOICE 2 IS NORMAL %%
 %% CHOICE 3 IS HARD %%
 
-choice(1) :- assertsResEasy, assertSum, write('\33\[2J'), nl, retract(horizontalRestEasy(Horizontal)),
-			retract(verticalRestEasy(Vertical)), 
-			drawRes(Horizontal, Vertical, 2, 5).
-choice(2) :- assertsResNormal, assertSum, write('\33\[2J'), nl, retract(horizontalRestNormal(Horizontal)),
-			retract(verticalRestNormal(Vertical)), 
-			drawRes(Horizontal, Vertical, 3, 7).
-choice(3) :- assertsResHard, assertSum, write('\33\[2J'), nl, retract(horizontalRestHard(Horizontal)),
-			retract(verticalRestHard(Vertical)),
-			drawRes(Horizontal, Vertical, 2, 9).
+choice(1) :- engine('Easy').
+choice(2) :- engine('Normal').
+choice(3) :- engine('Hard').
 
-%% DISPLAY BOARD + NUMBERS %%
-   %% DRAW RESTRICTIONS %%
+%% CALCULATE BOARD SIZE %%
 
-drawRes(ResBlack, ResWhite, SizeBlack, BoardSize) :- writeBlackRes(ResBlack, SizeBlack), createBoard(BoardSize), displayBoard(BoardSize, 0, ResWhite).
+calculateBoardSize(Size, Difficulty) :- Difficulty = 'Easy', retract(verticalRestEasy(Rest)), length(Rest, Size), assert(verticalRestEasy(Rest)).
+calculateBoardSize(Size, Difficulty) :- Difficulty = 'Normal', retract(verticalRestNormal(Rest)), length(Rest, Size), assert(verticalRestNormal(Rest)).
+calculateBoardSize(Size, Difficulty) :- Difficulty = 'Hard', retract(verticalRestHard(Rest)), length(Rest, Size), assert(verticalRestHard(Rest)).
+
+%% CHECK FINISH %%
+
+displayFinalMessage :- write('Congrats! You just concluded the puzzle with success!!'), abort.
+
+continue(X) :- X < 1, X > 1, write('merdou').
+
+%% GAME LOOP %%
+
+engine(Difficulty) :- Difficulty = 'Easy', 
+					write('\33\[2J'), nl, assertsResEasy, %% ASSERT INITIAL VARIABLES
+					calculateBoardSize(Size, Difficulty), createBoard(Size), !, assertSum, %% CREATE THE BOARD
+					retract(horizontalRestEasy(ResBlack)), length(ResBlack, SizeBlack),  %% WRITE THE RESTRICTIONS
+					writeBlackRes(ResBlack, SizeBlack), assert(horizontalRestEasy(ResBlack)), %% WRITE THE RESTRICTIONS
+					retract(verticalRestEasy(ResWhite)), displayBoard(Size, 0, ResWhite), assert(verticalRestEasy(ResWhite)), %% WRITE THE RESTRICTIONS, DISPLAY THE BOARD
+					readInput. write('\33\[2J'), nl,      %% READ INPUT COMMANDS      
+					countBoardSquares(Size, Size), retract(blackSquares(NrSquares)), nl, nl, nl, write(NrSquares),
+					finish(NrSquares, Difficulty), displayFinalMessage. %% DISPLAY THE NEW BOARD, CHECK FINAL CONDITION
+
+
+engine(Difficulty) :- Difficulty = 'Normal', 
+					write('\33\[2J'), nl, assertsResNormal, assertSum, %% ASSERT INITIAL VARIABLES
+					calculateBoardSize(Size, Difficulty), createBoard(Size), !,  %% CREATE THE BOARD
+					retract(horizontalRestNormal(ResBlack)), length(ResBlack, SizeBlack),  %% WRITE THE RESTRICTIONS
+					writeBlackRes(ResBlack, SizeBlack), assert(horizontalRestNormal(ResBlack)), %% WRITE THE RESTRICTIONS
+					retract(verticalRestNormal(ResWhite)), displayBoard(Size, 0, ResWhite),  %% WRITE THE RESTRICTIONS, DISPLAY THE BOARD
+					readInput, write('\33\[2J'), nl,      %% READ INPUT COMMANDS      
+					displayBoard(Size, 0, ResWhite), countBoardSquares(Size, Size), retract(blackSquares(NrSquares)), 
+					if(finish(NrSquares, Difficulty), displayFinalMessage, continue(1)). %% DISPLAY THE NEW BOARD, CHECK FINAL CONDITION
+
+
+engine(Difficulty) :- Difficulty = 'Hard', 
+					write('\33\[2J'), nl, assertsResHard, assertSum, %% ASSERT INITIAL VARIABLES
+					calculateBoardSize(Size, Difficulty), createBoard(Size), !,  %% CREATE THE BOARD
+					retract(horizontalRestHard(ResBlack)), length(ResBlack, SizeBlack),  %% WRITE THE RESTRICTIONS
+					writeBlackRes(ResBlack, SizeBlack), assert(horizontalRestHard(ResBlack)), %% WRITE THE RESTRICTIONS
+					retract(verticalRestHard(ResWhite)), displayBoard(Size, 0, ResWhite),  %% WRITE THE RESTRICTIONS, DISPLAY THE BOARD
+					readInput, write('\33\[2J'), nl,      %% READ INPUT COMMANDS      
+					displayBoard(Size, 0, ResWhite), countBoardSquares(Size, Size), retract(blackSquares(NrSquares)), 
+					if(finish(NrSquares, Difficulty), displayFinalMessage, continue(1)). %% DISPLAY THE NEW BOARD, CHECK FINAL CONDITION
+
+%% DEFINE CONSOLE COMMANDS %%
+
+readInput :- read(Command), interpret(Command).
+
+interpret(Command) :- Command = 'play', play.
+
+interpret(Command) :- Command = 'undo', undo.
+
+interpret(Command) :- Command = 'instructions', instructions.
+
+interpret(Command) :- Command = 'restart', restart.
+
+interpret(Command) :- Command = 'commands', commands.
+
+interpret(Command) :- Command = 'exit', exit.
+
+interpret(Command) :- Command = 'end', exit.
+
+interpret(Command) :- Command = 'solution', solution.
+
+interpret(Command) :- Command = 'menu', menu.
+
+%% COMMANDS %%
+
+play :- nl, write('X'), read(X), nl, write('Y'), read(Y), aPlay(X, Y, ' * ').
+
+undo :- nl, write('X'), read(X), nl, write('Y'), read(Y), aPlay(X, Y, '   ').
+
+instructions :- nl, nl, write('--- INSTRUCTIONS ---'), nl, write('Paint some cells black so that unpainted cells form at least two areas of the same size. Areas should be formed of edge-to-edge neighbouring cells and they can touch each other only diagonally. Numbers at the top indicate the amount of black cells blocks in the corresponding column. Numbers at the right indicate the amount of white cell blocks in the corresponding row.'), nl, nl.
+
+restart.
+
+commands :- nl, nl, write('--- COMMANDS ---'), nl,
+			write('play --> paint a cell'), nl,
+			write('undo --> undo a cell'), nl,
+			write('restart --> start over'), nl,
+			write('solution --> get the solution'), nl,
+			write('menu --> menu'), nl,
+			write('exit or end --> exit the game'), nl, nl.
+
+exit :- abort.
+
+solution.
 
 %% FINISH THE PUZZLE %%
+
+%% COUNT THE BLACK SQUARES ON THE BOARD %%
+
+noCount.
+
+checkElem(Elem) :- Elem = ' * '.
+
+sumBlackSquares :- retract(blackSquares(NrSquares)), Incr is NrSquares + 1, assert(blackSquares(Incr)).
+
+countSquares(0, Line).
+countSquares(LineSize, Line) :- LineSize > 0, nth1(LineSize, Line, Elem), 
+				if(checkElem(Elem), sumBlackSquares, noCount),
+				NewSize is LineSize - 1, countSquares(NewSize, Line).
+
+countBoardSquares(0, LineSize).
+countBoardSquares(BoardSize, LineSize) :- BoardSize > 0, retract(board(Board)), nth1(BoardSize, Board, Line), countSquares(LineSize, Line),
+							assert(board(Board)), NewSize is BoardSize - 1, countBoardSquares(NewSize, LineSize).
+				
 
 %% SUMS THE BLACK RESTRICTIONS WHICH IS THE FINAL NUMBER OF BLACK SQUARES %%
 
@@ -174,7 +281,7 @@ recursiveBlackSquares(Rest, RestSize) :- RestSize > 0, nth1(RestSize, Rest, Line
 
 countBlackSquares(Difficulty) :- Difficulty = 'Easy', retract(horizontalRestEasy(Rest)), length(Rest, RestSize),
 								recursiveBlackSquares(Rest, RestSize), assert(horizontalRestEasy(Rest)).
-countBlackSquares(Difficulty) :- Difficulty = 'Medium', retract(horizontalRestNormal(Rest)), length(Rest, RestSize),
+countBlackSquares(Difficulty) :- Difficulty = 'Normal', retract(horizontalRestNormal(Rest)), length(Rest, RestSize),
 								recursiveBlackSquares(Rest, RestSize), assert(horizontalRestNormal(Rest)).
 countBlackSquares(Difficulty) :- Difficulty = 'Hard', retract(horizontalRestHard(Rest)), length(Rest, RestSize),
 								recursiveBlackSquares(Rest, RestSize), assert(horizontalRestHard(Rest)).

@@ -1,1 +1,5 @@
-r :- read_string(Command, "\n", "\r", End, String), write(String), write('|||'), write(Command).
+readInput :- read(Command), interpret(Command).
+
+interpret(Command) :- Command = 'play', play.
+interpret(Command) :- Command = 'Play', play.
+interpret(Command) :- Command = 'undo', undo.

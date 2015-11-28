@@ -9,6 +9,7 @@
 :- dynamic horizontalRestHard/1.
 :- dynamic verticalRestHard/1.
 :- dynamic board/1.
+:- dynamic sum/1.
 
 %% SQUARE REPRESENTA UM QUADRADO DO TABULEIRO E %%
 %% PODE SER UM ESPAÇO EM BRANCO OU UM ASTERISCO %% 
@@ -110,6 +111,8 @@ assertsResHard :- assert(horizontalRestHard([
 								[1,1,1,1], [2,1,1,1], [4,3]
 								])).
 
+assertSum :- assert(sum(0)).
+
 
 logo :- write('        |||        '), nl,
 		write('       |||||       '), nl,
@@ -136,13 +139,13 @@ menu :- write('\33\[2J'), logo, write('Choose the difficulty of the puzzle: '),
 %% CHOICE 2 IS NORMAL %%
 %% CHOICE 3 IS HARD %%
 
-choice(1) :- assertsResEasy, write('\33\[2J'), nl, retract(horizontalRestEasy(Horizontal)),
+choice(1) :- assertsResEasy, assertSum, write('\33\[2J'), nl, retract(horizontalRestEasy(Horizontal)),
 			retract(verticalRestEasy(Vertical)), 
 			drawRes(Horizontal, Vertical, 2, 5).
-choice(2) :- assertsResNormal, write('\33\[2J'), nl, retract(horizontalRestNormal(Horizontal)),
+choice(2) :- assertsResNormal, assertSum, write('\33\[2J'), nl, retract(horizontalRestNormal(Horizontal)),
 			retract(verticalRestNormal(Vertical)), 
 			drawRes(Horizontal, Vertical, 3, 7).
-choice(3) :- assertsResHard, write('\33\[2J'), nl, retract(horizontalRestHard(Horizontal)),
+choice(3) :- assertsResHard, assertSum, write('\33\[2J'), nl, retract(horizontalRestHard(Horizontal)),
 			retract(verticalRestHard(Vertical)),
 			drawRes(Horizontal, Vertical, 2, 9).
 
@@ -151,3 +154,29 @@ choice(3) :- assertsResHard, write('\33\[2J'), nl, retract(horizontalRestHard(Ho
 
 drawRes(ResBlack, ResWhite, SizeBlack, BoardSize) :- writeBlackRes(ResBlack, SizeBlack), createBoard(BoardSize), displayBoard(BoardSize, 0, ResWhite).
 
+%% FINISH THE PUZZLE %%
+
+%% SUMS THE BLACK RESTRICTIONS WHICH IS THE FINAL NUMBER OF BLACK SQUARES %%
+
+%% TO RETURN TRUE WHEN IT IS NOT A NUMBER %%
+notNumber.
+
+calculateSquares(Elem) :- retract(sum(Sum)), Sum2 is Sum + Elem, assert(sum(Sum2)). 
+
+sumSquares(Line, 0).
+sumSquares(Line, LengthRes) :- LengthRes > 0, nth1(LengthRes, Line, Elem), if(number(Elem), calculateSquares(Elem), notNumber), 
+								NewLength is LengthRes - 1, sumSquares(Line, NewLength).  
+
+recursiveBlackSquares(Rest, 0).
+recursiveBlackSquares(Rest, RestSize) :- RestSize > 0, nth1(RestSize, Rest, Line), length(Line, Length),
+										sumSquares(Line, Length), NewSize is RestSize - 1, 
+										recursiveBlackSquares(Rest, NewSize).
+
+countBlackSquares(Difficulty) :- Difficulty = 'Easy', retract(horizontalRestEasy(Rest)), length(Rest, RestSize),
+								recursiveBlackSquares(Rest, RestSize), assert(horizontalRestEasy(Rest)).
+countBlackSquares(Difficulty) :- Difficulty = 'Medium', retract(horizontalRestNormal(Rest)), length(Rest, RestSize),
+								recursiveBlackSquares(Rest, RestSize), assert(horizontalRestNormal(Rest)).
+countBlackSquares(Difficulty) :- Difficulty = 'Hard', retract(horizontalRestHard(Rest)), length(Rest, RestSize),
+								recursiveBlackSquares(Rest, RestSize), assert(horizontalRestHard(Rest)).
+
+finish(NrBlack, Difficulty) :- countBlackSquares(Difficulty), retract(sum(Sum)), NrBlack = Sum. 

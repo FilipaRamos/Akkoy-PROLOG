@@ -168,13 +168,13 @@ continue(X) :- X < 1, X > 1, write('merdou').
 %% GAME LOOP %%
 
 engine(Difficulty) :- Difficulty = 'Easy', 
-					repeat, write('\33\[2J'), nl, assertsResEasy, %% ASSERT INITIAL VARIABLES
+					write('\33\[2J'), nl, assertsResEasy, %% ASSERT INITIAL VARIABLES
 					calculateBoardSize(Size, Difficulty), createBoard(Size), !, assertSum, %% CREATE THE BOARD
 					retract(horizontalRestEasy(ResBlack)), length(ResBlack, SizeBlack),  %% WRITE THE RESTRICTIONS
 					writeBlackRes(ResBlack, SizeBlack), assert(horizontalRestEasy(ResBlack)), %% WRITE THE RESTRICTIONS
 					retract(verticalRestEasy(ResWhite)), displayBoard(Size, 0, ResWhite), assert(verticalRestEasy(ResWhite)), %% WRITE THE RESTRICTIONS, DISPLAY THE BOARD
-					readInput.     %% READ INPUT COMMANDS      
-					countBoardSquares(Size, Size), retract(blackSquares(NrSquares)), nl, nl, nl, write(NrSquares),
+					readInput,     %% READ INPUT COMMANDS      
+					countBoardSquares(Size, Size), retract(blackSquares(NrSquares)), nl, nl, nl,
 					finish(NrSquares, Difficulty), displayFinalMessage. %% DISPLAY THE NEW BOARD, CHECK FINAL CONDITION
 
 

@@ -22,13 +22,21 @@ replaceP(O, R, [H|T], [H|T2]) :- dif(H,O), replaceP(O, R, T, T2).
 %%%%%%%%%%% PASSAR TABULEIRO LISTA DE LISTAS COM VARIÁVEIS -> 1 - BLACK  2 - WHITE
 %%%%%%%%%%% PASSAR RESTRICOES POR COLUNA E POR LINHA
 
-processWhite(Count, [H|T]) :- H = [Count], write(' List-->> '), write(NewList), Count is 0.
+processWhite(Count, 0, Count).
+processBlack(Elem, Count, NewCount, H) :- if(Elem == 1, NewCount is Count + 1,
+							if(Count  > 0, processWhite(Count, NewCount, H), NewCount is 0)),
+  							write(' Count -> '), write(NewCount).
 
-processBlack(Elem, Count, List) :- if(Elem = 1, Count is Count + 1, if(Count > 0, processWhite(Count, List), Count is 0)), write(' count -> '), write(Count).
+countConsecutiveBlack([], 0, []).
+countConsecutiveBlack([], Count, [Count|[]]).
+countConsecutiveBlack([Elem|Tail], Count, [H | T]) :-
+                write(' Elem = '), write(Elem),
+                processBlack(Elem, Count, NewCount, H),
+                nl,
+                if((NewCount == 0, Count \== 0),
+                countConsecutiveBlack(Tail, NewCount, T),
+                countConsecutiveBlack(Tail, NewCount, [H | T])).
 
-countConsecutiveBlack(Row, 0, Count, Result).
-countConsecutiveBlack(Row, NRow, Count, Result) :- NRow > 0, nth1(NRow, Row, Elem), write(' Elem = '), write(Elem), write(' Count1 > '), write(Count), processBlack(Elem, Count, Result), 
-								NewN is NRow - 1, retract(count(C)), write(' C = '), write(C), countConsecutiveBlack(Row, NewN, C, Result).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 

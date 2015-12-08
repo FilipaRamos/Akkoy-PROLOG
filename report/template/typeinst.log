@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.15 (MiKTeX 2.9 64-bit) (preloaded format=pdflatex 2015.10.8)  8 DEC 2015 14:33
+This is pdfTeX, Version 3.14159265-2.6-1.40.15 (MiKTeX 2.9 64-bit) (preloaded format=pdflatex 2015.10.8)  8 DEC 2015 16:34
 entering extended mode
 **"C:/Users/utilizador/Documents/Universidade/PLOG/Projeto II/Akkoy-PROLOG/repo
 rt/template/typeinst.tex"
@@ -223,7 +223,11 @@ G,.JBIG2,.JB2,.eps]
 ("C:\Program Files\MiKTeX 2.9\tex\latex\url\url.sty"
 \Urlmuskip=\muskip10
 Package: url 2013/09/16  ver 3.4  Verb mode for urls, etc.
-) (typeinst.aux)
+) (typeinst.aux
+
+LaTeX Warning: Label `url' multiply defined.
+
+)
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 32.
 LaTeX Font Info:    ... okay on input line 32.
 LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 32.
@@ -236,8 +240,7 @@ LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 32.
 LaTeX Font Info:    ... okay on input line 32.
 LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 32.
 LaTeX Font Info:    ... okay on input line 32.
-
-("C:\Program Files\MiKTeX 2.9\tex\context\base\supp-pdf.mkii"
+ ("C:\Program Files\MiKTeX 2.9\tex\context\base\supp-pdf.mkii"
 [Loading MPS to PDF converter (version 2006.09.02).]
 \scratchcounter=\count117
 \scratchdimen=\dimen127
@@ -276,29 +279,38 @@ File: solucaoExemplo.png Graphic file (type png)
 Package pdftex.def Info: solucaoExemplo.png used on input line 100.
 (pdftex.def)             Requested size: 158.91138pt x 176.407pt.
 
-[2 <./puzzleExemplo.png> <./solucaoExemplo.png>] [3] (typeinst.aux) ) 
+[2 <./puzzleExemplo.png> <./solucaoExemplo.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 134--135
+[]\OT1/cmr/m/n/9 Clpfd Doc-u-men-ta-tion, $\OT1/cmtt/m/n/9 https : / / sicstus 
+. sics . se / sicstus / docs / 4 . 1 . 0 / html /$
+ []
+
+[3] (typeinst.aux)
+
+LaTeX Warning: There were multiply-defined labels.
+
+ ) 
 Here is how much of TeX's memory you used:
- 2296 strings out of 493698
- 30416 string characters out of 3144397
- 95152 words of memory out of 3000000
- 5591 multiletter control sequences out of 15000+200000
+ 2291 strings out of 493698
+ 30368 string characters out of 3144397
+ 95176 words of memory out of 3000000
+ 5586 multiletter control sequences out of 15000+200000
  10779 words of font info for 42 fonts, out of 3000000 for 9000
  1025 hyphenation exceptions out of 8191
  42i,5n,26p,1070b,347s stack positions out of 5000i,500n,10000p,200000b,50000s
-<C:/Progra
-m Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbx10.pfb><C:/Program Files/
-MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbx12.pfb><C:/Program Files/MiKTeX 2
-.9/fonts/type1/public/amsfonts/cm/cmbx9.pfb><C:/Program Files/MiKTeX 2.9/fonts/
-type1/public/amsfonts/cm/cmex10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/pu
-blic/amsfonts/cm/cmmi10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/ams
-fonts/cm/cmmi7.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/
-cmr10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr7.pfb>
-<C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr9.pfb><C:/Progra
-m Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Program Files/
-MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy7.pfb><C:/Program Files/MiKTeX 2.
-9/fonts/type1/public/amsfonts/cm/cmti9.pfb><C:/Program Files/MiKTeX 2.9/fonts/t
-ype1/public/amsfonts/cm/cmtt9.pfb>
-Output written on typeinst.pdf (3 pages, 198516 bytes).
+<C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbx10.pfb><C:/Pr
+ogram Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbx12.pfb><C:/Program Fi
+les/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbx9.pfb><C:/Program Files/MiKTe
+X 2.9/fonts/type1/public/amsfonts/cm/cmex10.pfb><C:/Program Files/MiKTeX 2.9/fo
+nts/type1/public/amsfonts/cm/cmmi10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type
+1/public/amsfonts/cm/cmmi7.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/
+amsfonts/cm/cmr10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/
+cm/cmr7.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr9.pf
+b><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Pr
+ogram Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy7.pfb><C:/Program Fil
+es/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmti9.pfb><C:/Program Files/MiKTeX
+ 2.9/fonts/type1/public/amsfonts/cm/cmtt9.pfb>
+Output written on typeinst.pdf (3 pages, 194421 bytes).
 PDF statistics:
  69 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)

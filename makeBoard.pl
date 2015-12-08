@@ -16,7 +16,7 @@ processBlack(Count, 0, Count).
 processWhite(Elem, Count, NewCount, H) :- if(Elem == 2, NewCount is Count + 1,
 							if(Count  > 0, processBlack(Count, NewCount, H), NewCount is 0)).
 
-countConsecutiveWhite([], 0, []).
+countConsecutiveWhite([], 0, L) :- L = [].
 countConsecutiveWhite([], Count, [Count|[]]).
 countConsecutiveWhite([Elem|Tail], Count, [H | T]) :-
                 processWhite(Elem, Count, NewCount, H),

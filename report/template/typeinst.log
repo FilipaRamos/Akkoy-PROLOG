@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.15 (MiKTeX 2.9 64-bit) (preloaded format=pdflatex 2015.10.8)  8 DEC 2015 12:47
+This is pdfTeX, Version 3.14159265-2.6-1.40.15 (MiKTeX 2.9 64-bit) (preloaded format=pdflatex 2015.10.8)  8 DEC 2015 14:10
 entering extended mode
 **"C:/Users/utilizador/Documents/Universidade/PLOG/Projeto II/Akkoy-PROLOG/repo
 rt/template/typeinst.tex"
@@ -259,23 +259,13 @@ LaTeX Font Info:    Try loading font information for U+msb on input line 71.
 
 ("C:\Program Files\MiKTeX 2.9\tex\latex\amsfonts\umsb.fd"
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
-) [1
+)
+Underfull \vbox (badness 2351) has occurred while \output is active []
+
+ [1
 
 
 {C:/ProgramData/MiKTeX/2.9/pdftex/config/pdftex.map}]
-Overfull \hbox (14.67911pt too wide) in paragraph at lines 152--157
-\OT1/cmr/m/n/10 Springer pro-vides you with a com-plete in-te-grated L[]T[]X do
-c-u-ment class (\OT1/cmtt/m/n/10 llncs.cls\OT1/cmr/m/n/10 )
- []
-
-
-Overfull \hbox (0.3565pt too wide) in paragraph at lines 163--167
-\OT1/cmr/m/n/10 page ``\OT1/cmr/m/it/10 How to get it\OT1/cmr/m/n/10 '' ($\OT1/
-cmtt/m/n/10 http : / / www . latex-[]project . org / ftp . html$\OT1/cmr/m/n/10
- ) re-spec-tively. 
- []
-
-[2] [3]
 Package epstopdf Info: Source file: <eijkel2.eps>
 (epstopdf)                    date: 1997-11-28 09:36:34
 (epstopdf)                    size: 13532 bytes
@@ -284,45 +274,42 @@ Package epstopdf Info: Source file: <eijkel2.eps>
 (epstopdf)                    size: 7066 bytes
 (epstopdf)             Command: <epstopdf --outfile=eijkel2-eps-converted-to.pd
 f eijkel2.eps>
-(epstopdf)             \includegraphics on input line 240.
+(epstopdf)             \includegraphics on input line 114.
 Package epstopdf Info: Output file is already uptodate.
- <eijkel2-eps-converted-to.pdf, id=22, 491.8375pt x 399.4925pt>
+
+<eijkel2-eps-converted-to.pdf, id=11, 491.8375pt x 399.4925pt>
 File: eijkel2-eps-converted-to.pdf Graphic file (type pdf)
 
 <use eijkel2-eps-converted-to.pdf>
-Package pdftex.def Info: eijkel2-eps-converted-to.pdf used on input line 240.
+Package pdftex.def Info: eijkel2-eps-converted-to.pdf used on input line 114.
 (pdftex.def)             Requested size: 217.18216pt x 176.407pt.
- [4 <./eijkel2-eps-converted-to.pdf>]
-[5] [6] [7] (typeinst.aux) ) 
+ [2 <./eijkel2-eps-converted-to.pdf>]
+[3] (typeinst.aux) ) 
 Here is how much of TeX's memory you used:
- 2314 strings out of 493698
- 30548 string characters out of 3144397
- 95152 words of memory out of 3000000
- 5595 multiletter control sequences out of 15000+200000
- 12540 words of font info for 49 fonts, out of 3000000 for 9000
+ 2302 strings out of 493698
+ 30393 string characters out of 3144397
+ 94144 words of memory out of 3000000
+ 5586 multiletter control sequences out of 15000+200000
+ 10779 words of font info for 42 fonts, out of 3000000 for 9000
  1025 hyphenation exceptions out of 8191
- 42i,9n,26p,535b,347s stack positions out of 5000i,500n,10000p,200000b,50000s
-<C:/Program Files/MiKTeX 2.9/fonts/type1/public/ams
-fonts/cm/cmbx10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm
-/cmbx12.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbx9.p
-fb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmex10.pfb><C:/P
-rogram Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi10.pfb><C:/Program F
-iles/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi6.pfb><C:/Program Files/MiKT
-eX 2.9/fonts/type1/public/amsfonts/cm/cmmi7.pfb><C:/Program Files/MiKTeX 2.9/fo
-nts/type1/public/amsfonts/cm/cmmi9.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1
-/public/amsfonts/cm/cmr10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/a
-msfonts/cm/cmr6.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm
-/cmr7.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr9.pfb>
-<C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Prog
-ram Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy7.pfb><C:/Program Files
-/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmti10.pfb><C:/Program Files/MiKTeX 
-2.9/fonts/type1/public/amsfonts/cm/cmti9.pfb><C:/Program Files/MiKTeX 2.9/fonts
-/type1/public/amsfonts/cm/cmtt10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/p
-ublic/amsfonts/cm/cmtt9.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/ams
-fonts/symbols/msam10.pfb>
-Output written on typeinst.pdf (7 pages, 259985 bytes).
+ 42i,5n,26p,1070b,347s stack positions out of 5000i,500n,10000p,200000b,50000s
+<C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm
+/cmbx10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbx12.
+pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbx9.pfb><C:/P
+rogram Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmex10.pfb><C:/Program F
+iles/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi10.pfb><C:/Program Files/MiK
+TeX 2.9/fonts/type1/public/amsfonts/cm/cmmi6.pfb><C:/Program Files/MiKTeX 2.9/f
+onts/type1/public/amsfonts/cm/cmmi7.pfb><C:/Program Files/MiKTeX 2.9/fonts/type
+1/public/amsfonts/cm/cmmi9.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/
+amsfonts/cm/cmr10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/
+cm/cmr7.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr9.pf
+b><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Pr
+ogram Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy7.pfb><C:/Program Fil
+es/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmti9.pfb><C:/Program Files/MiKTeX
+ 2.9/fonts/type1/public/amsfonts/cm/cmtt9.pfb>
+Output written on typeinst.pdf (3 pages, 185326 bytes).
 PDF statistics:
- 107 PDF objects out of 1000 (max. 8388607)
+ 77 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
  6 words of extra memory for PDF output out of 10000 (max. 10000000)
 

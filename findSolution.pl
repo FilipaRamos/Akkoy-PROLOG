@@ -20,6 +20,9 @@ countConsecutiveBlack([Elem|Tail], Count, [H | T]) :-
                 countConsecutiveBlack(Tail, NewCount, T),
                 countConsecutiveBlack(Tail, NewCount, [H | T])).
 
+count([], 0, []).
+count([Elem | Tail], Count, [H|T]) :- NewCount is Count + Elem, if((NewCount == Count, Count \== 0), count(Tail, Count, [H | T]), count(Tail, NewCount, T)).
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -118,3 +121,13 @@ solutions(B, RWhite, RBlack) :-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 		labeling([ffc], B).
 
+test(S, Begins, R1):-
+                formLines(R1, Lines, Begins, LastVal),
+                DomainEnd #= S-LastVal,
+                domain(Begins, 0, DomainEnd),
+                disjoint1(Lines, [margin(1,1,1)]),
+                labeling([], Begins)
+                .
+
+formLines([Rfirst], [f(Var,Rfirst,1)], [Var], Rfirst) :- !.
+formLines([Rfirst|Rs], [f(Var,Rfirst,1)|Lines], [Var|Begins], LastVal) :- formLines(Rs, Lines, Begins, LastVal).

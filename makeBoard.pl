@@ -10,19 +10,18 @@ replace([H|T], Index, X, [H|R]):- Index > -1, NI is Index-1, replace(T, NI, X, R
 replace(L, _, _, L).
 
 %% COUNT WHITE SQUARES
-
-processBlack(Count, 0, Count).
-
-processWhite(Elem, Count, NewCount, H) :- if(Elem == 2, NewCount is Count + 1,
-							if(Count  > 0, processBlack(Count, NewCount, H), NewCount is 0)).
-
-countConsecutiveWhite([], 0, L) :- L = [].
-countConsecutiveWhite([], Count, [Count|[]]).
-countConsecutiveWhite([Elem|Tail], Count, [H | T]) :-
-                processWhite(Elem, Count, NewCount, H),
-                if((NewCount == 0, Count \== 0),
-                countConsecutiveWhite(Tail, NewCount, T),
-                countConsecutiveWhite(Tail, NewCount, [H | T])).
+countConsecutiveWhite([],0,[]).
+ 
+countConsecutiveWhite([],Count,[Count]).
+                               
+countConsecutiveWhite([1 | Tail],0,L):-
+                                countConsecutiveWhite(Tail,0,L).
+countConsecutiveWhite([1 | Tail],Count,[Count|L]):-
+                                countConsecutiveWhite(Tail,0,L).
+                               
+countConsecutiveWhite([2 | Tail],Count,L):-
+                                NewCount is Count + 1,
+                                countConsecutiveWhite(Tail,NewCount,L).
 
 %% PROCESS COUNTS
 

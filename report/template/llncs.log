@@ -1,0 +1,17 @@
+This is pdfTeX, Version 3.14159265-2.6-1.40.15 (MiKTeX 2.9 64-bit) (preloaded format=pdftex 2015.10.8)  8 DEC 2015 11:28
+entering extended mode
+**"C:/Users/utilizador/Documents/Universidade/PLOG/Projeto II/Akkoy-PROLOG/repo
+rt/template/llncs.cls"
+
+("C:/Users/utilizador/Documents/Universidade/PLOG/Projeto II/Akkoy-PROLOG/repor
+t/template/llncs.cls"
+! Undefined control sequence.
+l.21 \NeedsTeXFormat
+                    {LaTeX2e}[1995/12/01]
+? 
+! Emergency stop.
+l.21 \NeedsTeXFormat
+                    {LaTeX2e}[1995/12/01]
+End of file on the terminal!
+
+!  ==> Fatal error occurred, no output PDF file produced!

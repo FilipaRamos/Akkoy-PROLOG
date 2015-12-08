@@ -9,45 +9,49 @@ replace([_|T], 0, X, [X|T]).
 replace([H|T], Index, X, [H|R]):- Index > -1, NI is Index-1, replace(T, NI, X, R), !.
 replace(L, _, _, L).
 
-%% CREATE EMPTY MATRIX
+%% COUNT WHITE SQUARES
 
-createList(0,[]).
-createList(Size, [H|T]) :- Size > 0, NewSize is Size - 1, H = 1, 
-					createList(NewSize, T).
+processBlack(Count, 0, Count).
 
-createMatrix(0, [], _MatLength).
-createMatrix(Size, [H|T], _MatLength) :- Size > 0, NewSize is Size - 1, createList(_MatLength, List),
-					H = List, createMatrix(NewSize, T, _MatLength).
+processWhite(Elem, Count, NewCount, H) :- if(Elem == 2, NewCount is Count + 1,
+							if(Count  > 0, processBlack(Count, NewCount, H), NewCount is 0)).
 
-randomBoard :- random(3, 9, Size), makeBoard(Size).
+countConsecutiveWhite([], 0, []).
+countConsecutiveWhite([], Count, [Count|[]]).
+countConsecutiveWhite([Elem|Tail], Count, [H | T]) :-
+                processWhite(Elem, Count, NewCount, H),
+                if((NewCount == 0, Count \== 0),
+                countConsecutiveWhite(Tail, NewCount, T),
+                countConsecutiveWhite(Tail, NewCount, [H | T])).
 
-makeBoard(Size) :- setArea(Size, AreaSize), createArea(AreaSize, 3), createMatrix(Size, Matrix, Size).
+%% PROCESS COUNTS
 
-setArea(Size, AreaSize) :- random(1, Size, AreaSize).
+returnTrue.
 
-createArea(Size, AreaSize, NrAreas, Matrix, NewMatrix) :- random(1, Size, LineN), nth1(LineN, Matrix, Line), 
-							random(1, Size, Index), write(LineN), write(Index), NewIndex is Index - 1, 
-							replace(Line, NewIndex, 2, NewLine), NewL is LineN - 1, replace(Matrix, NewL, NewLine, NewMatrix), findAdjacent(NewMatrix, Size, AreaSize, LineN, Index).
-
-findAdjacent(Matrix, Size, AreaSize, X, Y).
+processCount(List, Variables) :- countConsecutiveWhite(Variables, 0, List), element(1, List, Elem1), if(Elem1 #\= 0, returnTrue, processCount(List, Variables)), write(' encravou!! ').
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 randomBoard(B) :- 
 		B = [A1, A2, A3, A4, B1, B2, B3, B4, C1, C2, C3, C4, D1, D2, D3, D4],
 		domain(B, 1, 2),
-		countConsecutiveWhite([A1, A2, A3, A4], List1),
-		length(List1, Size1),
-		Size1 #<= 2,
-		countConsecutiveWhite([B1, B2, B3, B4], List2),
+		countConsecutiveWhite([A1, A2, A3, A4], 0, List1),
+		write(' count '),
+		length(List1, Size1), write(' Length = '), write(Size1),
+		Size1 #< 4 #/\ Size1 #> 1,
+		write(' true -- 1 '),
+		countConsecutiveWhite([B1, B2, B3, B4], 0, List2),
 		length(List2, Size2),
 		Size2 #= Size1,
-		countConsecutiveWhite([C1, C2, C3, C4], List3),
+		write(' true -- 2 '),
+		countConsecutiveWhite([C1, C2, C3, C4], 0, List3),
 		length(List3, Size3),
 		Size3 #= Size1,
-		countConsecutiveWhite([D1, D2, D3, D4], List4),
+		write(' true -- 3 '),
+		countConsecutiveWhite([D1, D2, D3, D4], 0, List4),
 		length(List4, Size4),
 		Size4 #= Size1,
+		write(' true -- 4 '),
 		labeling([ffc], B).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%

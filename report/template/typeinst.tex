@@ -84,7 +84,25 @@ The article is structured in order to make it easier to understand the solution.
 
 \section {Problem Description}
 
+The presented problem consists in solving an akkoy puzzle. This puzzle has a blank board with numbers on the top and on the right. Figure \ref{example} represents a puzzle with size seven. 
 
+\begin{figure}
+\centering
+\includegraphics[height=6.2cm]{puzzleExemplo.png}
+\caption{Example Puzzle.}
+\label{example}
+\end{figure}
+
+The numbers on the top represent the number of black squares in each column. For example, in the fourth column there must be three black squares separated. The numbers on the right represent the number of white squares in each line. If these requirements are met, the solution will be a drawing composed of black and white areas (such as Figure \ref{solution}). 
+
+\begin{figure}[h!]
+\centering
+\includegraphics[height=6.2cm]{solucaoExemplo.png}
+\caption{Solution of the example puzzle.}
+\label{solution}
+\end{figure}
+
+If there are no numbers in a certain line or column it means that there are no restrictions on the respective line or column.
 
 \section {Approach}
 
@@ -103,22 +121,8 @@ The article is structured in order to make it easier to understand the solution.
 
 \section{Results}
 
-The numbers accorded to lemmas, propositions, and theorems, etc. should
-appear in consecutive order, starting with Lemma 1, and not, for
-example, with Lemma 11.
 
 \section{Conclusions and Future Work}
-
-\begin{figure}
-\centering
-\includegraphics[height=6.2cm]{eijkel2}
-\caption{One kernel at $x_s$ (\emph{dotted kernel}) or two kernels at
-$x_i$ and $x_j$ (\textit{left and right}) lead to the same summed estimate
-at $x_s$. This shows a figure consisting of different types of
-lines. Elements of the figure described in the caption should be set in
-italics, in parentheses, as shown in this sample caption.}
-\label{fig:example}
-\end{figure}
 
 
 \section{References}

@@ -1,0 +1,76 @@
+sugestões:
+
+-  usar uam variável para cada célula do tabuleiro
+- codificar o tabuleiro como uma lista de listas:
+    [
+       [A11, A12, A13, A14, A15],
+       [A21, A22, A23, A24, A25],
+       [A31, A32, A33, A34, A35],
+       [A41, A42, A43, A44, A45],
+       [A51, A52, A53, A54, A55]
+    ]
+
+- cada variável pode ser do dominio w ou b (white ou black)
+
+- faça um predicado para preencher o tabuleiro de modo a que, por backtracking, consegue gerar diferentes colocações das peças pretas e brancas.
+
+- escreva um conjunto de predicados utiliztarios que recebem o tabuleiro e devolve uma linha especificada ou uma coluna especificada.
+  Exemplo:
+      getLinha(+NumeroDaLinha, +Tabuleiro, -Linha).   
+
+      getColuna(+Tabuleiro, +NumeroDaColuna, -Coluna).
+
+-  escreva mais uns predicados para contar os pretos numa coluna e os brancos numa linha
+
+- escreva as restrições para as colunas
+
+- escreva as retrições para as linhas
+
+- escreva as restrições para as áreas.
+
+- chame o labeling/2
+
+
+
+Algum Código:
+
+:- use_module(library(lists)).
+:- use_module(library(clpfd)).
+
+
+Pode usar 0 para repersnetar branco e 1 para preto:
+
+  domain(Vars, 0, 1)   em que vars é o conjuto das variáves que resulta do predicado mkTabuleiro
+
+
+
+mkTabuleiro(Dimensao, Tabuleiro, Vars) :-
+     mkTab(Dimensao, Dimensao, Tabuleiro, Vars).
+
+mkTab(1, Dimensao, [Linha], Vars) :-
+   mkLinha(Dimensao, Linha).
+mkTab(L, Dimensao, [Linha|MaisLinhas], Vars) :-
+   L > 1,
+   mkLinha(Dimensao, Linha),
+   Prev is L - 1,
+   mkTab(Prev, Dimensao, MaisLinhas, MaisVars),
+   append(Linha, MaisVars, Vars).
+	
+
+mkLinha(1, [V]),
+mkLinha(L, [V|Vars]) :-
+     L > 1,
+     Prev is L - 1,
+     mkLinha(Prev, Vars).
+
+
+getLinha(1, [Linha|_], Linha).   
+getLinha(L, [_|MaislInhas], Linha) :-
+	    L > 1,
+	    Prev is L -1,
+	    getLinha(Prev, MaislInhas, Linha).
+
+getColuna([], _, []).
+getColuna([Linha|MaisLinhas], Ncoluna, [Valor|MaisValores]) :-
+	   nth1(Ncoluna, Linha, Valor),
+          getColuna(MaisLinhas, Ncoluna, MaisValores).

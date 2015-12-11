@@ -61,10 +61,16 @@ countBlack([Row|Rest],[Head|Tail]):-
 	countConsecutiveBlack(Row, Head),
 	countBlack(Rest,Tail).
 
+fit([],[],_).
+fit([B|Bs], [R|Rs], S):- B + R #=< S+1, fit(Bs, Rs, S).
+
 getPossibilities(S, Begins, R1):-
+				%nl, nl,
+				%write('->'), write(R1),
+				%nl,nl,
                 formLines(R1, Lines, Begins, LastVal),
-                DomainEnd #= S-LastVal,
-                domain(Begins, 0, DomainEnd),
+                domain(Begins, 1, S),
+                fit(Begins, R1, S),
                 disjoint1(Lines, [margin(1,1,1)])
                 %labeling([], Begins)
                 .
@@ -76,7 +82,7 @@ formLines([Rfirst], [f(Var,Rfirst,1)], [Var], Rfirst) :- !.
 formLines([Rfirst|Rs], [f(Var,Rfirst,1)|Lines], [Var|Begins], LastVal) :- formLines(Rs, Lines, Begins, LastVal).
 
 gen_matrix(_,0,M, M).
-gen_matrix(Or, N, M, Acc):- N>0, length(Line, Or), append(Acc, Line, Acc2), N1 is N - 1, gen_matrix(Or, N1, M, Acc2).
+gen_matrix(Or, N, M, Acc):- N>0, length(Line, Or), append(Acc, [Line], Acc2), N1 is N - 1, gen_matrix(Or, N1, M, Acc2).
 gen_matrix(N, M):- gen_matrix(N, N, M, []).
 
 append_board([], Vars, Vars).
@@ -94,41 +100,66 @@ apply_single_merged(List, I, CurDist, Length, Color, Result):-
 						Elem #= Color,
 						element(CurPos, Result, Res),
 						Res #= 1,
-						I1 is I+1,
-						apply_single_merged(List, I1, CurDist, Length, Color, Result).
+						CurDist1 is CurDist+1,
+						apply_single_merged(List, I, CurDist1, Length, Color, Result).
 
 apply_single_merged(List, [I, Length], Color, Result):- apply_single_merged(List, I, 0, Length, Color, Result).
 
-apply_merged(_, [], _, _)
+apply_merged(_, [], _, _).
 apply_merged(List, [M|Merged], Color, Results):-
 						apply_single_merged(List, M, Color, Results),
 						apply_merged(List, Merged, Color, Results).
 
+count_painted([], N, N).
+count_painted([[I, V]|Merged], Acc, N):- Acc2 is Acc + V, count_painted(Merged, Acc2, N).
+count_painted(Merged, N):- count_painted(Merged, 0, N).
+
+color_all([],_).
+color_all([L|Ls], Color):-
+						L #= Color,
+						color_all(Ls, Color).
+
+apply_restrictions(S, List, [x], Color):- !, write('otrto').
+apply_restrictions(S, List, [], Color):- !, swap_color(Color, InvertedColor), color_all(List, InvertedColor).
 apply_restrictions(S, List, Restrictions, Color):-
 						getPossibilities(S, Begins, Restrictions),
 						merge_begins(Begins, Restrictions, Merged),
 						length(Result, S),
+						domain(Result, 0, 1),
 						apply_merged(List, Merged, Color, Result),
-						length(Inverted, S),
-						invert_list(Result, Inverted),
 						swap_color(Color, InvertedColor),
-						apply_inverted(List, Inverted, InvertedColor).
+						count_painted(Merged, NumPainted),
+						count(1, Result, #=, NumPainted),
+						apply_inverted(List, Result, InvertedColor).
+
+apply_all_restrictions(_, [], [], _).						
+apply_all_restrictions(S, [M|Ms], [R|Rs],
+ Color):-
+						apply_restrictions(S, M, R, Color),
+						apply_all_restrictions(S, Ms, Rs, Color).
 
 apply_inverted([], [], _).
 apply_inverted([Elem|Elems], [I|Is], InvertedColor):-
 						I #= 0 #=> Elem #= InvertedColor,
 						apply_inverted(Elems, Is, InvertedColor).
 
-akkoy(Rcolumns, Rrows):-
+akkoy(Rcolumns, Rrows, Rows):-!,
+						write('sdaasd'),
+						write(Rcolumns), nl,
+						write(Rrows), nl,
+						!,
 						length(Rcolumns, N),
 						gen_matrix(N, Board),
-						apply_restrictions(N, Board, Rcolumns, 1),
+						!,
+						apply_all_restrictions(N, Board, Rcolumns, 1),
 						transpose(Board, Rows),
-						apply_restrictions( N, Rows, Rrows, 0),
+						!,
+						apply_all_restrictions( N, Rows, Rrows, 0),
 						append_board(Board, Vars),
+						write(Vars),
+						domain(Vars, 0,1),
 						labeling([],Vars).
 
-list_difference([L1H|L1T], L2, L3):- 
 
 
 restrictWhite(Begins, Length, Length, Row).
@@ -167,66 +198,10 @@ processBeginsBlack(Begins, Row) :- length(Begins, Length), processBeginsBlackAux
 
 findBegins(AllBegins, Rest) :- findall(Begins, getPossibilities(4, Begins, Rest), AllBegins).
 
-teste :-
+teste(L, Black) :-
 	Vars = [[A1,A2,A3,A4], [B1,B2,B3,B4],[C1,C2,C3,C4], [D1,D2,D3,D4]],
 	createBoard(Vars),
 	write(Vars), nl,
 	countWhite(Vars,L),
 	transpose(Vars, TransposedVars),
-	countBlack(TransposedVars, Black),
-
-	nth1(1, L, Rest1),
-	nth1(2, L, Rest2),
-	nth1(3, L, Rest3),
-	nth1(4, L, Rest4),
-
-	findBegins(Begins1, Rest1),
-	findBegins(Begins2, Rest2),
-	findBegins(Begins3, Rest3),
-	findBegins(Begins4, Rest4),
-
-	%%%%%%%%%%%%%%%%%
-
-	nth1(1, Black, Black1),
-	nth1(2, Black, Black2),
-	nth1(3, Black, Black3),
-	nth1(4, Black, Black4),
-
-	findBegins(Bg1, Black1),
-	findBegins(Bg2, Black2),
-	findBegins(Bg3, Black3),
-	findBegins(Bg4, Black4),
-
-	Vars2 = [[E1,E2,E3,E4], [F1,F2,F3,F4], [G1,G2,G3,G4], [H1,H2,H3,H4]],
-	domain([F1,F2,F3,F4], 0, 1),
-	domain([E1,E2,E3,E4], 0, 1),
-	domain([G1,G2,G3,G4], 0, 1),
-	domain([H1,H2,H3,H4], 0, 1),
-
-	processBeginsWhite(Begins1, [E1,E2,E3,E4]),
-
-	processBeginsWhite(Begins2, [F1,F2,F3,F4]),
-
-	processBeginsWhite(Begins3, [G1,G2,G3,G4]),
-
-	processBeginsWhite(Begins4, [H1,H2,H3,H4]),
-
-	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-	write('onde esta a merdar?'),nl, nl, 
-
-	processBeginsBlack(Bg1, [E1,F1,G1,H1]),
-
-	processBeginsBlack(Bg2, [E2,F2,G2,H2]),
-
-	processBeginsBlack(Bg3, [E3,F3,G3,H3]),
-
-	processBeginsBlack(Bg4, [E4,F4,G4,H4]),
-
-	write('labeling?'),nl, nl, 
-	labeling([],[E1,E2,E3,E4]),
-	labeling([],[F1,F2,F3,F4]),
-	labeling([],[G1,G2,G3,G4]),
-	labeling([],[H1,H2,H3,H4]),
-
-	write(Vars2).
+	countBlack(TransposedVars, Black).

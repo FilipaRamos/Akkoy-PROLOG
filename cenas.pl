@@ -205,3 +205,49 @@ teste(L, Black) :-
 	countWhite(Vars,L),
 	transpose(Vars, TransposedVars),
 	countBlack(TransposedVars, Black).
+
+mark_areas_aux(ID, S, Matrix, AreaIDs, Color, X, Y):- X1 is X + 1, Y1 is Y + 1, X1 >= 1, X1 =< S, Y1 >= 1, Y1 =< S, 
+				element(Y1, Matrix, Row), element(X1, Row, NewColor), element(Y1, AreaIDs, RowID), 
+				element(X1, RowID, NewID), Color#=0 #=> (NewColor#=1 #=>NewID #= 0), Color#=0 #=> (NewColor #=0 #=> NewID #= ID).
+mark_areas_aux(ID, S, Matrix, AreaIDs, Color, X, Y):- X1 is X + 1, Y1 is Y - 1, X1 >= 1, X1 =< S, Y1 >= 1, Y1 =< S, 
+				element(Y1, Matrix, Row), element(X1, Row, NewColor), element(Y1, AreaIDs, RowID), 
+				element(X1, RowID, NewID), Color#=0 #=> (NewColor#=1 #=>NewID #= 0), Color#=0 #=> (NewColor #=0 #=> NewID #= ID).
+mark_areas_aux(ID, S, Matrix, AreaIDs, Color, X, Y):- X1 is X - 1, Y1 is Y + 1, X1 >= 1, X1 =< S, Y1 >= 1, Y1 =< S, 
+				element(Y1, Matrix, Row), element(X1, Row, NewColor), element(Y1, AreaIDs, RowID), 
+				element(X1, RowID, NewID), Color#=0 #=> (NewColor#=1 #=>NewID #= 0),  Color#=0 #=> (NewColor #=0 #=> NewID #= ID).
+mark_areas_aux(ID, S, Matrix, AreaIDs, Color, X, Y):- X1 is X - 1, Y1 is Y - 1, X1 >= 1, X1 =< S, Y1 >= 1, Y1 =< S,  
+				element(Y1, Matrix, Row), element(X1, Row, NewColor), element(Y1, AreaIDs, RowID), 
+				element(X1, RowID, NewID), Color#=0 #=> (NewColor#=1 #=>NewID #= 0),  Color#=0 #=> (NewColor #=0 #=> NewID #= ID).
+
+mark_areas(, , _, []).
+mark_areas(S, Matrix, AreaIDs, [[X,Y]|Cells]):-
+                                            element(Y, Matrix, Row),
+                                            element(X, Row, Color),
+                                            element(Y, AreaIDs, RowID),
+                                            element(X, RowID, ID),
+                                            mark_areas_aux(ID, S, Matrix, AreaIDs, Color, X, Y),
+                                            mark_areas(S, Matrix, AreaIDs, Cells).
+
+counts(_IDs, [], _ID).
+counts(IDs, [C|Counts], ID):- count(ID, IDs, #=, C), counts(IDs, Counts, ID).
+
+same_counts_aux(_C, []).
+same_counts_aux(C, [O|OtherCounts]):- C #= 0 #\/ O#=0 #\/ C=O, same_counts_aux(C, OtherCounts).
+
+same_counts([]).
+same_counts([C|Counts]):- same_counts_aux(C, Counts), same_counts(Counts).
+
+same_size_areas(N):- 
+                     unknown_matrix(Matrix, N),
+                     flatten_list(Matrix, Vars),
+                     domain(Vars, 0, 1),
+                     findall([X,Y], (between(1,N, X),between(1,N,Y)), L),
+                     unknown_matrix(AreaIDs, N),
+                     N2 is N * N,
+                     flatten_list(AreaIDs, IDs),
+                     domain(IDs, 0, N2),
+                     mark_areas(N, Matrix, AreaIDs, L),
+                     length(Counts, N2),
+                     counts(IDs, Counts, 1),
+                     same_counts(Counts),
+                     labeling([], Vars).

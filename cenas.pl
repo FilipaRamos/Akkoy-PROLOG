@@ -1,6 +1,7 @@
 :- use_module(library(lists)).
 :- use_module(library(clpfd)).
 :- use_module(library(random)).
+:- use_module(library(between)).
 
 createRow([]).
 createRow([Head | Tail]) :- 
@@ -64,12 +65,71 @@ getPossibilities(S, Begins, R1):-
                 formLines(R1, Lines, Begins, LastVal),
                 DomainEnd #= S-LastVal,
                 domain(Begins, 0, DomainEnd),
-                disjoint1(Lines, [margin(1,1,1)]),
-                labeling([], Begins)
+                disjoint1(Lines, [margin(1,1,1)])
+                %labeling([], Begins)
                 .
+
+merge_begins([], [], []).
+merge_begins([B|Bs], [R|Rs], [[B,R]|Merged]):-merge_begins(Bs, Rs, Merged).
 
 formLines([Rfirst], [f(Var,Rfirst,1)], [Var], Rfirst) :- !.
 formLines([Rfirst|Rs], [f(Var,Rfirst,1)|Lines], [Var|Begins], LastVal) :- formLines(Rs, Lines, Begins, LastVal).
+
+gen_matrix(_,0,M, M).
+gen_matrix(Or, N, M, Acc):- N>0, length(Line, Or), append(Acc, Line, Acc2), N1 is N - 1, gen_matrix(Or, N1, M, Acc2).
+gen_matrix(N, M):- gen_matrix(N, N, M, []).
+
+append_board([], Vars, Vars).
+append_board([Line|Lines], Vars, Acc):- append(Acc, Line, Acc2), append_board(Lines, Vars, Acc2).
+append_board(Board, Vars):- append_board(Board, Vars, []).
+
+swap_color(1,0).
+swap_color(0,1).
+
+apply_single_merged(_, _, Length, Length, _, _):-!.
+apply_single_merged(List, I, CurDist, Length, Color, Result):-
+						CurDist < Length,
+						CurPos #= I+CurDist,
+						element(CurPos, List, Elem),
+						Elem #= Color,
+						element(CurPos, Result, Res),
+						Res #= 1,
+						I1 is I+1,
+						apply_single_merged(List, I1, CurDist, Length, Color, Result).
+
+apply_single_merged(List, [I, Length], Color, Result):- apply_single_merged(List, I, 0, Length, Color, Result).
+
+apply_merged(_, [], _, _)
+apply_merged(List, [M|Merged], Color, Results):-
+						apply_single_merged(List, M, Color, Results),
+						apply_merged(List, Merged, Color, Results).
+
+apply_restrictions(S, List, Restrictions, Color):-
+						getPossibilities(S, Begins, Restrictions),
+						merge_begins(Begins, Restrictions, Merged),
+						length(Result, S),
+						apply_merged(List, Merged, Color, Result),
+						length(Inverted, S),
+						invert_list(Result, Inverted),
+						swap_color(Color, InvertedColor),
+						apply_inverted(List, Inverted, InvertedColor).
+
+apply_inverted([], [], _).
+apply_inverted([Elem|Elems], [I|Is], InvertedColor):-
+						I #= 0 #=> Elem #= InvertedColor,
+						apply_inverted(Elems, Is, InvertedColor).
+
+akkoy(Rcolumns, Rrows):-
+						length(Rcolumns, N),
+						gen_matrix(N, Board),
+						apply_restrictions(N, Board, Rcolumns, 1),
+						transpose(Board, Rows),
+						apply_restrictions( N, Rows, Rrows, 0),
+						append_board(Board, Vars),
+						labeling([],Vars).
+
+list_difference([L1H|L1T], L2, L3):- 
+
 
 restrictWhite(Begins, Length, Length, Row).
 restrictWhite(Begins, Length, Counter, Row) :- 

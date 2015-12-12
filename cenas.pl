@@ -197,7 +197,7 @@ apply_inverted([Elem|Elems], [I|Is], InvertedColor):-
 	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	%% FIND THE SOLUTION FOR THE PUZZLE
 
-akkoy(Rcolumns, Rrows, Rows):- statistics(runtime, FirstStats),
+solutions(Rcolumns, Rrows, Rows) :- statistics(runtime, RestrictionsRunTime),
 						!,
 						length(Rcolumns, N),
 						gen_matrix(N, Board),
@@ -209,17 +209,17 @@ akkoy(Rcolumns, Rrows, Rows):- statistics(runtime, FirstStats),
 						append_board(Board, Vars),
 
 						domain(Vars, 0,1),
-						labeling([],Vars),
-						getStats.
+						labeling([],Vars).
 
 	%%%%%%%%%%%%%%%%%
 	%% GET STATISTICS
 
 getStats :-
+	nl,
 	statistics(runtime, Stats),
 	write('Runtime since the start: '), nth0(0, Stats, SinceStart), write(SinceStart),
 	nl,
-	write('Runtime since last statistics: '), nth0(1, Stats, SincePrevious), write(SincePrevious),
+	write('Runtime of the solution finder: '), nth0(1, Stats, SincePrevious), write(SincePrevious),
 	nl.
 
 	%%%%%%%%%%%%%%%%%
@@ -258,12 +258,12 @@ same_counts([C|Counts]):- same_counts_aux(C, Counts), same_counts(Counts).
 
 same_size_areas(N):- 
                      gen_matrix(N, Matrix),
-                     flatten_list(Matrix, Vars),
+                     append_board(Matrix, Vars),
                      domain(Vars, 0, 1),
                      findall([X,Y], (between(1,N, X),between(1,N,Y)), L),
                      gen_matrix(N, AreaIDs),
                      N2 is N * N,
-                     flatten_list(AreaIDs, IDs),
+                     append_board(AreaIDs, IDs),
                      domain(IDs, 0, N2),
                      mark_areas(N, Matrix, AreaIDs, L),
                      length(Counts, N2),

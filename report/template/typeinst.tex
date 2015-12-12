@@ -79,8 +79,8 @@ The present report serves the purpose of explaning the process of finding a solu
 
 \section{Introduction}
 
-This project was developed for the curricular unit of Logic Programming in order to deepen the knowledge of the clpfd prolog library. Between the many objectives accounted for this project, the following can be highlighted: examining the results of the use of restrictions whilst programming, understanding the logic of rule-based languages, realizing the advantages of logic in programming. The analized puzzle has many restrictions which made it hard to find a solution which incorporated all the restrictions. Besides this, the efficiency of the solution can not be hightened as well as in other puzzles since the difficulty level is very high. The implemented solution uses the following approach: count the number of black squares in columns and white squares in lines and compare it with the numbers on the restrictions list. The returned board is a list of variables. Each number one represents a black square and each number two represents a white square. 
-The article is structured in order to make it easier to understand the solution. Firstly, the problem is described. Secondly, the solution and its visualization is explained. Finally, the results are analized and the conclusions are made. 
+This project was developed for the curricular unit of Logic Programming in order to deepen the knowledge of the clpfd prolog library. Between the many objectives accounted for this project, the following can be highlighted: examining the results of the use of restrictions whilst programming, understanding the logic of rule-based languages, realizing the advantages of logic in programming. The analized puzzle has many restrictions which made it hard to find a solution which incorporated all the restrictions. Besides this, the restrictions must be applied to different objects such as columns, rows and areas. The implemented solution uses the following approach: find out the different possibilities for each column and row according to the numbers given by the problem. The board that fills the restrictions in every row and column will be the solution. The returned board is a list of variables. Each number one represents a black square and each number zero represents a white square. 
+The article is structured in order to make it easier to understand the solution. Firstly, the problem is described. Secondly, the solution and its visualization is explained. Finally, the results are analized and the conclusions are drawn. 
 
 \section {Problem Description}
 
@@ -102,19 +102,67 @@ The numbers on the top represent the number of black squares in each column. For
 \label{solution}
 \end{figure}
 
-If there are no numbers in a certain line or column it means that there are no restrictions on the respective line or column.
+If there are no numbers in a certain line or column it means that there are no restrictions on the respective line or column (restriction represented by [x]).
 
 \section {Approach}
 
-
-
 \subsection{Decision Variables}
 
+	The following are the several decision variables used in the developed project: 
+		\begin{enumerate}
+			\item \verb|getPossibilities(S, Begins, R1)|
+			\begin{enumerate}
+				\item S represents the size of the row
+				\item Begins are the decision variables
+				\item R1 is the list with the restriction for the column
+				\item domain is between 1 and S 
+			\end{enumerate}
+		\
+
+			 - Returns a list with the possible index positions for areas in a row according to the given restrictions.
+			The domain is from one to S because it represents all the possible positions on the row.
+
+			 \item \verb|apply_restrictions(S, List, Restrictions, Color)|
+			\begin{enumerate}
+				\item S is the size of the row
+				\item List is the row that is being restricted
+				\item Restrictions is the list of the numbers for the respective row
+				\item Color is the color that is being analized (white if it is a row/ black if it is a column)
+				\item domain is between 0 and 1
+			\end{enumerate}
+		\
+
+			- Restricts a single row. Domain is between black or white, 1 and 0 respectively.
+	
+
+			\item \verb|akkoy(Rcolumns, Rrows, Rows)|
+				\begin{enumerate}
+				\item Rcolumns is the list of lists of restrictions for each column
+				\item Rrows is the list of lists of restrictions for each row
+				\item Rows is the solved board
+				\item domain is between 0 and 1
+			\end{enumerate}
+		\
+
+			- Finds the solution for the problem by applying the restrictions.
+		\end{enumerate}
+		
 \subsection{Constraints}
+
+	The following constraints are applied:
+
+	\begin{enumerate}
+	\item \emph{List of numbers}
+		- A number restriction is when there is a number or more on a column or row. These constraints are applied by \verb|apply_restrictions| which summons \verb|apply_merged| and \verb|apply_single_merged|. \verb|apply_restrictions| calls the other two until there are no more rows or columns to restrict. The two paint the cells in the right indexes (found with\verb|getPossibilities|) with the given color and paint the rest of the row the opposite color afterwards. 
+	\item \emph{Empty list}
+		- An empty list means there are no cells with that color on the row. If \verb|apply_restrictions| is called with an empty list of restrictions it calls \verb|swap_color| and \verb|color_all| which color the entire row with the opposite color.
+	\item \emph{No restriction}
+		- If a row has no restrictions any combination is possible. This is represented by [x]. If this happens, \verb|apply_restrictions| does not have any effect.
+	\end{enumerate}
 
 \subsection{Search Strategy}
 
-
+	The labeling is called with an empty list of options (same as [leftmost,step,up,all]). This happens because of the problem which does not need any specific method to restrict the board.
 
 \section{Solution Presentation}
 

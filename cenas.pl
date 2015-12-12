@@ -3,6 +3,9 @@
 :- use_module(library(random)).
 :- use_module(library(between)).
 
+	%%%%%%%%%%%%%%%%
+	%%	RANDOM BOARD
+
 createRow([]).
 createRow([Head | Tail]) :- 
 	random(1, 10, Random),
@@ -13,6 +16,9 @@ createBoard([]).
 createBoard([Head | Tail]) :-
 	createRow(Head),
 	createBoard(Tail).
+
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	%%	GET WHITE RESTRICTIONS
 
 processBlack(Count, 0, Count).
 processWhite(Elem, Count, NewCount, H) :- if(Elem == 0, NewCount is Count + 1,
@@ -36,7 +42,8 @@ countWhite([Row|Rest],[Head|Tail]):-
 	countConsecutiveWhite(Row, Head),
 	countWhite(Rest,Tail).
 
-	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	%%	GET BLACK RESTRICTIONS
 
 processWhite2(Count, 0, Count).
 processBlack2(Elem, Count, NewCount, H) :- if(Elem == 1, NewCount is Count + 1,
@@ -61,25 +68,49 @@ countBlack([Row|Rest],[Head|Tail]):-
 	countConsecutiveBlack(Row, Head),
 	countBlack(Rest,Tail).
 
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	%% CREATE A BOARD WITH DOMAIN VARIABLES
+
+newBoard(Size, Board):- newBoardAux(Size, Size, Board).
+ 
+newBoardAux(0,_,[]).
+newBoardAux(Pos, Size, [Head | Tails]):-
+	Pos > 0,
+	length(Head, Size),
+	Pos1 is Pos - 1,
+	newBoardAux(Pos1, Size, Tails).
+
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	%% CREATE THE RANDOM BOARD AND GET THE RESTRICTIONS
+
+randomBoard(White, Black, Size) :-
+	newBoard(Size, Vars),
+	createBoard(Vars),
+	write(Vars), nl,
+	countWhite(Vars, White),
+	transpose(Vars, TransposedVars),
+	countBlack(TransposedVars, Black).
+
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	%% 	GET THE POSSIBLE POSITIONS FOR EACH ROW
+
 fit([],[],_).
 fit([B|Bs], [R|Rs], S):- B + R #=< S+1, fit(Bs, Rs, S).
 
 getPossibilities(S, Begins, R1):-
-				%nl, nl,
-				%write('->'), write(R1),
-				%nl,nl,
                 formLines(R1, Lines, Begins, LastVal),
                 domain(Begins, 1, S),
                 fit(Begins, R1, S),
-                disjoint1(Lines, [margin(1,1,1)])
-                %labeling([], Begins)
-                .
+                disjoint1(Lines, [margin(1,1,1)]).
+
+formLines([Rfirst], [f(Var,Rfirst,1)], [Var], Rfirst) :- !.
+formLines([Rfirst|Rs], [f(Var,Rfirst,1)|Lines], [Var|Begins], LastVal) :- formLines(Rs, Lines, Begins, LastVal).
 
 merge_begins([], [], []).
 merge_begins([B|Bs], [R|Rs], [[B,R]|Merged]):-merge_begins(Bs, Rs, Merged).
 
-formLines([Rfirst], [f(Var,Rfirst,1)], [Var], Rfirst) :- !.
-formLines([Rfirst|Rs], [f(Var,Rfirst,1)|Lines], [Var|Begins], LastVal) :- formLines(Rs, Lines, Begins, LastVal).
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	%% FORM THE MATRIX WITH THE DOMAIN VARIABLES
 
 gen_matrix(_,0,M, M).
 gen_matrix(Or, N, M, Acc):- N>0, length(Line, Or), append(Acc, [Line], Acc2), N1 is N - 1, gen_matrix(Or, N1, M, Acc2).
@@ -89,8 +120,14 @@ append_board([], Vars, Vars).
 append_board([Line|Lines], Vars, Acc):- append(Acc, Line, Acc2), append_board(Lines, Vars, Acc2).
 append_board(Board, Vars):- append_board(Board, Vars, []).
 
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	%% SWAP THE COLOR (AUX FUNCTION)
+
 swap_color(1,0).
 swap_color(0,1).
+
+	%%%%%%%%%%%%%%%%%%%%%%%%%%
+	%% APPLY THE RESTRICTIONS
 
 apply_single_merged(_, _, Length, Length, _, _):-!.
 apply_single_merged(List, I, CurDist, Length, Color, Result):-
@@ -110,16 +147,25 @@ apply_merged(List, [M|Merged], Color, Results):-
 						apply_single_merged(List, M, Color, Results),
 						apply_merged(List, Merged, Color, Results).
 
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	%% COUNT THE NUMBER OF PAINTED CELLS
+
 count_painted([], N, N).
 count_painted([[I, V]|Merged], Acc, N):- Acc2 is Acc + V, count_painted(Merged, Acc2, N).
 count_painted(Merged, N):- count_painted(Merged, 0, N).
+
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	%% WHEN THE RESTRICTION LIST IS EMPTY THE LINE IS COLORED WITH THE OPPOSED COLOR 
 
 color_all([],_).
 color_all([L|Ls], Color):-
 						L #= Color,
 						color_all(Ls, Color).
 
-apply_restrictions(S, List, [x], Color):- !, write('otrto').
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	%% CALL THE FUNCTIONS THAT RESTRICT EACH LINE
+
+apply_restrictions(S, List, [x], Color):- !.
 apply_restrictions(S, List, [], Color):- !, swap_color(Color, InvertedColor), color_all(List, InvertedColor).
 apply_restrictions(S, List, Restrictions, Color):-
 						getPossibilities(S, Begins, Restrictions),
@@ -132,21 +178,26 @@ apply_restrictions(S, List, Restrictions, Color):-
 						count(1, Result, #=, NumPainted),
 						apply_inverted(List, Result, InvertedColor).
 
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	%% CALL THE RESTRICTIONS RECURSIVELY
+
 apply_all_restrictions(_, [], [], _).						
-apply_all_restrictions(S, [M|Ms], [R|Rs],
- Color):-
+apply_all_restrictions(S, [M|Ms], [R|Rs], Color):-
 						apply_restrictions(S, M, R, Color),
 						apply_all_restrictions(S, Ms, Rs, Color).
+
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	%% PAINT THE REST OF THE LINE WITH THE OPPOSED COLOR
 
 apply_inverted([], [], _).
 apply_inverted([Elem|Elems], [I|Is], InvertedColor):-
 						I #= 0 #=> Elem #= InvertedColor,
 						apply_inverted(Elems, Is, InvertedColor).
 
-akkoy(Rcolumns, Rrows, Rows):-!,
-						write('sdaasd'),
-						write(Rcolumns), nl,
-						write(Rrows), nl,
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	%% FIND THE SOLUTION FOR THE PUZZLE
+
+akkoy(Rcolumns, Rrows, Rows):- statistics(runtime, FirstStats),
 						!,
 						length(Rcolumns, N),
 						gen_matrix(N, Board),
@@ -154,57 +205,25 @@ akkoy(Rcolumns, Rrows, Rows):-!,
 						apply_all_restrictions(N, Board, Rcolumns, 1),
 						transpose(Board, Rows),
 						!,
-						apply_all_restrictions( N, Rows, Rrows, 0),
+						apply_all_restrictions(N, Rows, Rrows, 0),
 						append_board(Board, Vars),
-						write(Vars),
+
 						domain(Vars, 0,1),
-						labeling([],Vars).
+						labeling([],Vars),
+						getStats.
 
+	%%%%%%%%%%%%%%%%%
+	%% GET STATISTICS
 
+getStats :-
+	statistics(runtime, Stats),
+	write('Runtime since the start: '), nth0(0, Stats, SinceStart), write(SinceStart),
+	nl,
+	write('Runtime since last statistics: '), nth0(1, Stats, SincePrevious), write(SincePrevious),
+	nl.
 
-restrictWhite(Begins, Length, Length, Row).
-restrictWhite(Begins, Length, Counter, Row) :- 
-		Counter < Length, 
-		nth0(Counter, Begins, Index),
-		nth0(Index, Row, Elem),
-		Elem #= 0,
-		NewCounter is Counter + 1,
-		restrictWhite(Begins, Length, NewCounter, Row).
-
-processBeginsWhiteAux(Begins, Row, Length, Length).
-processBeginsWhiteAux(Begins, Row, Length, Counter) :- Counter < Length, 
-						nth0(Counter, Begins, OneBegin),
-						length(OneBegin, BeginLength),
-						restrictWhite(OneBegin, BeginLength, 0, Row),
-						NewCounter is Counter + 1,
-						processBeginsWhiteAux(Begins, Row, Length, NewCounter).
-
-processBeginsWhite(Begins, Row) :- length(Begins, Length), processBeginsWhiteAux(Begins, Row, Length, 0).
-
-restrictBlack(Begins, Length, Length, Row).
-restrictBlack(Begins, Length, Counter, Row) :- 
-		Counter < Length, 
-		nth0(Counter, Begins, Index),
-		nth0(Index, Row, Elem),
-		Elem #= 1,
-		NewCounter is Counter + 1,
-		restrictBlack(Begins, Length, NewCounter, Row).
-
-processBeginsBlackAux(Begins, Row, Length, Length).
-processBeginsBlackAux(Begins, Row, Length, Counter) :- Counter < Length, nth0(Counter, Begins, OneBegin), length(OneBegin, BeginLength), restrictBlack(OneBegin, BeginLength, 0, Row),
-						NewCounter is Counter + 1, processBeginsBlackAux(Begins, Row, Length, NewCounter).  
-
-processBeginsBlack(Begins, Row) :- length(Begins, Length), processBeginsBlackAux(Begins, Row, Length, 0).
-
-findBegins(AllBegins, Rest) :- findall(Begins, getPossibilities(4, Begins, Rest), AllBegins).
-
-teste(L, Black) :-
-	Vars = [[A1,A2,A3,A4], [B1,B2,B3,B4],[C1,C2,C3,C4], [D1,D2,D3,D4]],
-	createBoard(Vars),
-	write(Vars), nl,
-	countWhite(Vars,L),
-	transpose(Vars, TransposedVars),
-	countBlack(TransposedVars, Black).
+	%%%%%%%%%%%%%%%%%
+	%% IDENTIFY AREAS
 
 mark_areas_aux(ID, S, Matrix, AreaIDs, Color, X, Y):- X1 is X + 1, Y1 is Y + 1, X1 >= 1, X1 =< S, Y1 >= 1, Y1 =< S, 
 				element(Y1, Matrix, Row), element(X1, Row, NewColor), element(Y1, AreaIDs, RowID), 
@@ -219,7 +238,7 @@ mark_areas_aux(ID, S, Matrix, AreaIDs, Color, X, Y):- X1 is X - 1, Y1 is Y - 1, 
 				element(Y1, Matrix, Row), element(X1, Row, NewColor), element(Y1, AreaIDs, RowID), 
 				element(X1, RowID, NewID), Color#=0 #=> (NewColor#=1 #=>NewID #= 0),  Color#=0 #=> (NewColor #=0 #=> NewID #= ID).
 
-mark_areas(, , _, []).
+mark_areas(_, _, _, []).
 mark_areas(S, Matrix, AreaIDs, [[X,Y]|Cells]):-
                                             element(Y, Matrix, Row),
                                             element(X, Row, Color),
@@ -238,11 +257,11 @@ same_counts([]).
 same_counts([C|Counts]):- same_counts_aux(C, Counts), same_counts(Counts).
 
 same_size_areas(N):- 
-                     unknown_matrix(Matrix, N),
+                     gen_matrix(N, Matrix),
                      flatten_list(Matrix, Vars),
                      domain(Vars, 0, 1),
                      findall([X,Y], (between(1,N, X),between(1,N,Y)), L),
-                     unknown_matrix(AreaIDs, N),
+                     gen_matrix(N, AreaIDs),
                      N2 is N * N,
                      flatten_list(AreaIDs, IDs),
                      domain(IDs, 0, N2),
@@ -250,4 +269,4 @@ same_size_areas(N):-
                      length(Counts, N2),
                      counts(IDs, Counts, 1),
                      same_counts(Counts),
-                     labeling([], Vars).
+                     labeling([], Vars), write(Vars).

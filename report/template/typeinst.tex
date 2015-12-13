@@ -166,10 +166,58 @@ If there are no numbers in a certain line or column it means that there are no r
 
 \section{Solution Presentation}
 
+	Initially the board is displayed as an empty board (Figure \ref{empty}) with the restrictions on the top and right. 
 
+	\begin{figure}[h]
+	\centering
+	\includegraphics[height=5cm]{empty.png}
+	\caption{Display of an empty board of size 6.}
+	\label{empty}
+	\end{figure}
+
+	After writing on the console 'solutions.' the solutions predicate is called and the solved board is displayed on the console (Figure \ref{displayFinal}). The simbol ' * ' stands for a painted cell and the empty spaces stand for white cells.
+
+	\begin{figure}[h]
+	\centering
+	\includegraphics[height=5cm]{displayFinal.png}
+	\caption{Display of the solution.}
+	\label{displayFinal}
+	\end{figure}
+
+	The commands allowed for the user are either 'solutions' or 'end' or 'exit'. The first shows the solution and the two last abort the execution.
+	After the solution is displayed the runtime can be consulted (Figure \ref{runtime}).
+
+	\begin{figure}[h]
+	\centering
+	\includegraphics[height=0.8cm]{runtime.png}
+	\caption{Display of the runtime.}
+	\label{runtime}
+	\end{figure}
+
+	The \verb|displayBoard| predicate is responsible for drawing the board and the white restrictions. It calls \verb|displayLine| which calls \verb|countLines| and \verb|writeLine|. These draw the lines that look like this: '-----'. Afterwards, the \verb|writeDashes| predicate is called. It resorts to other predicates such as \verb|displayBoardElem| which gets the board element to display and writes it between the '|'. Following this, the \verb|writeWhiteRes| predicate is called. Resorting to \verb|writeElement|, it writes the numbers of the resctrictions for the white squares.
+
+
+\newpage
 \section{Results}
 
+	The runtime is only affected when the size of the board is 7 or higher. Any size up to 7 gives a medium runtime of zero. After 7 the runtime rises exponentially. The runing time also depends on the problem. There are problems that prove to be more of a challenge and the restrictions take longer to implement. This leads to different runtimes in boards of the same size. The problems with restrictions numbers as high as the board size are easier to solve. For example for a board of size 10 if a line has a restriction of 10 the runtime is almost zero. This would differ from the time it takes to find the solution for a board of the same size whithout such a restriction. One of the hardest tested problems gave a runtime of 21000. The puzzles found on the website are resolved with a runtime of zero independently of the size. The random puzzles can have higher difficulties which leads to higher runtimes. After the size 10, with random puzzles, the runtime is too high and not documented. As seen in Figure \ref{runtimeHigh} the values rise abruptly after size 9. The line on the background represents the trendline for the runtimes. 
 
+	\begin{figure}[h!]
+	\centering
+	\includegraphics[height=6.0cm]{runtimeHigh.png}
+	\caption{Graphic featuring the highest runtimes obtained.}
+	\label{runtimeHigh}
+	\end{figure}
+
+
+	\begin{figure}[h!]
+	\centering
+	\includegraphics[height=6.0cm]{runtimeBest.png}
+	\caption{Graphic featuring the lowest runtimes obtained.}
+	\label{runtimeBest}
+	\end{figure}
+
+\newpage
 \section{Conclusions and Future Work}
 
 

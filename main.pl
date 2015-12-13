@@ -6,7 +6,7 @@
 :- include('cenas.pl'). 
 
 main :- write('\33\[2J'), readSize(Size), randomBoard(W, B, Size), 
-		nl, write(B), nl, displayBoard(Size, 0, W, []), readInput(W, B, Size).
+		nl, restBlack(B, Size), nl, displayBoard(Size, 0, W, []), readInput(W, B, Size).
 
 readSize(Size) :- nl, write(' 1. Insert Size '), nl, 
 					write(' 2. Random Size '), nl,
@@ -20,7 +20,7 @@ readInput(W, B, Size) :- read(Command), interpret(Command, Size, W, B).
 
 interpret('end', _, _, _) :- abort.
 interpret('exit', _, _, _) :- abort.
-interpret('solutions', Size, W, B) :- solutions(W, B, Solution), nl, write(B), nl, displayBoard(Size, 0, W, Solution), nl, getStats.
+interpret('solutions', Size, W, B) :- solutions(W, B, Solution), nl, restBlack(B, Size), nl, displayBoard(Size, 0, W, Solution), nl, getStats.
 
 	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -63,3 +63,27 @@ createMatrix(Size, [H|T], MatLength) :- Size > 0, NewSize is Size - 1, createLis
 displayBoard(Size, Size, _, _) :- displayLine(Size).
 displayBoard(Size, NrLine, Res, Board) :- displayLine(Size), writeDashes(Size, NrLine, 0, Board), 
 							write('|'), writeWhiteRes(Res, NrLine), NewLine is NrLine + 1, displayBoard(Size, NewLine, Res, Board).
+
+doNothing.
+
+displayList(_, Length, Length).
+displayList(List, Length, Counter) :- Counter < Length,
+		nth0(Counter, List, Elem), 
+		if(Counter == 0, doNothing, write(',')), write(Elem), 
+		NewCounter is Counter + 1, 
+		displayList(List, Length, NewCounter).
+
+restBlackAux(_, Size, Size).
+restBlackAux(Rest, Size, Counter) :- Counter < Size,
+		nth0(Counter, Rest, List), 
+		length(List, Length), 
+		if(Counter == 0, doNothing, write(' | ')),
+		displayList(List, Length, 0),
+		NewCounter is Counter + 1,
+		restBlackAux(Rest, Size, NewCounter). 
+
+restBlack(Rest, Size) :-
+	nl,
+	write(' Black Restrictions: '),
+	nl,
+	restBlackAux(Rest, Size, 0), nl.

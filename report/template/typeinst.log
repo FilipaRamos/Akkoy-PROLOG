@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.15 (MiKTeX 2.9 64-bit) (preloaded format=pdflatex 2015.10.8)  12 DEC 2015 19:00
+This is pdfTeX, Version 3.14159265-2.6-1.40.15 (MiKTeX 2.9 64-bit) (preloaded format=pdflatex 2015.10.8)  13 DEC 2015 00:57
 entering extended mode
 **"C:/Users/utilizador/Documents/Universidade/PLOG/Projeto II/Akkoy-PROLOG/repo
 rt/template/typeinst.tex"
@@ -285,25 +285,68 @@ Overfull \hbox (2.98824pt too wide) in paragraph at lines 165--166
 s [left-most,step,up,all]).
  []
 
-[3]
-Underfull \hbox (badness 10000) in paragraph at lines 182--183
+[3] <empty.png, id=25, 161.403pt x 122.25674pt>
+File: empty.png Graphic file (type png)
+ <use empty.png>
+Package pdftex.def Info: empty.png used on input line 173.
+(pdftex.def)             Requested size: 187.82607pt x 142.26378pt.
+
+<displayFinal.png, id=26, 161.403pt x 122.25674pt>
+File: displayFinal.png Graphic file (type png)
+ <use displayFinal.png>
+Package pdftex.def Info: displayFinal.png used on input line 182.
+(pdftex.def)             Requested size: 187.82607pt x 142.26378pt.
+
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+<runtime.png, id=27, 208.3785pt x 22.8855pt>
+File: runtime.png Graphic file (type png)
+ <use runtime.png>
+Package pdftex.def Info: runtime.png used on input line 192.
+(pdftex.def)             Requested size: 207.26193pt x 22.76228pt.
+
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+[4 <./empty.png>] <runtimeHigh.png, id=32, 289.68225pt x 174.05025pt>
+File: runtimeHigh.png Graphic file (type png)
+
+<use runtimeHigh.png>
+Package pdftex.def Info: runtimeHigh.png used on input line 207.
+(pdftex.def)             Requested size: 284.13419pt x 170.71652pt.
+
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+<runtimeBest.png, id=33, 289.68225pt x 174.05025pt>
+File: runtimeBest.png Graphic file (type png)
+ <use runtimeBest.png>
+Package pdftex.def Info: runtimeBest.png used on input line 215.
+(pdftex.def)             Requested size: 284.13419pt x 170.71652pt.
+
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+[5 <./displayFinal.png> <./runtime.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 230--231
 []\OT1/cmr/m/n/9 Clpfd Doc-u-men-ta-tion, $\OT1/cmtt/m/n/9 https : / / sicstus 
 . sics . se / sicstus / docs / 4 . 1 . 0 / html /$
  []
 
-[4] (typeinst.aux)
+[6 <./runtimeHigh.png> <./runtimeBest.png>] [7] (typeinst.aux)
 
 LaTeX Warning: There were multiply-defined labels.
 
  ) 
 Here is how much of TeX's memory you used:
- 2295 strings out of 493698
- 30410 string characters out of 3144397
- 96176 words of memory out of 3000000
- 5588 multiletter control sequences out of 15000+200000
+ 2324 strings out of 493698
+ 30886 string characters out of 3144397
+ 96216 words of memory out of 3000000
+ 5613 multiletter control sequences out of 15000+200000
  11293 words of font info for 44 fonts, out of 3000000 for 9000
  1025 hyphenation exceptions out of 8191
- 42i,5n,26p,1099b,347s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 42i,6n,26p,1258b,347s stack positions out of 5000i,500n,10000p,200000b,50000s
 <C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbx10.pfb><C:/Pr
 ogram Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbx12.pfb><C:/Program Fi
 les/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbx9.pfb><C:/Program Files/MiKTe
@@ -318,9 +361,9 @@ es/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmti10.pfb><C:/Program Files/MiKTe
 X 2.9/fonts/type1/public/amsfonts/cm/cmti9.pfb><C:/Program Files/MiKTeX 2.9/fon
 ts/type1/public/amsfonts/cm/cmtt10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1
 /public/amsfonts/cm/cmtt9.pfb>
-Output written on typeinst.pdf (4 pages, 224393 bytes).
+Output written on typeinst.pdf (7 pages, 282224 bytes).
 PDF statistics:
- 80 PDF objects out of 1000 (max. 8388607)
+ 99 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
- 11 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 36 words of extra memory for PDF output out of 10000 (max. 10000000)
 

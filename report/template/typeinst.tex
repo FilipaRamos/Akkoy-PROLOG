@@ -103,6 +103,7 @@ The numbers on the top represent the number of black squares in each column. For
 \end{figure}
 
 If there are no numbers in a certain line or column it means that there are no restrictions on the respective line or column (restriction represented by [x]).
+The puzzles created dynamically in the implementation consisted of assigning random colors to an empty board.
 
 \section {Approach}
 
@@ -135,7 +136,7 @@ If there are no numbers in a certain line or column it means that there are no r
 			- Restricts a single row. Domain is between black or white, 1 and 0 respectively.
 	
 
-			\item \verb|akkoy(Rcolumns, Rrows, Rows)|
+			\item \verb|solutions(Rcolumns, Rrows, Rows)|
 				\begin{enumerate}
 				\item Rcolumns is the list of lists of restrictions for each column
 				\item Rrows is the list of lists of restrictions for each row
@@ -164,6 +165,27 @@ If there are no numbers in a certain line or column it means that there are no r
 
 	The labeling is called with an empty list of options (same as [leftmost,step,up,all]). This happens because of the problem which does not need any specific method to restrict the board.
 
+\subsection{Clpfd built-in predicates}
+
+	The predicate \verb|getPossibilities| uses the disjoint1 clpfd predicate. After running it, Begins is a list of domain variables which represent the several indexes for positioning the cells according to the given restriction. For example, for a row with size 4 and restrictions [2,1] the predicate will use disjoint1 to realize the valid combination of positions (Figure \ref{possibilities}). The predicate \verb|formLines| helps make lines in the format f(Sj,Dj). Sj represents the domain variable and Dj is the length of the line which is found in the restriction list. The option given to \verb|disjoint1| is margin in order to impose a distance of 1 between each of the lines. 
+
+	\begin{figure}[h]
+	\centering
+	\includegraphics[height=2.5cm]{possibilities.png}
+	\caption{Possible positions for a column with restriction [2,1].}
+	\label{possibilities}
+	\end{figure}
+
+	This predicate does not call labeling in order to keep Begins as a domain variable which is useful for the \verb|solutions| predicate. This predicate uses \verb|getPossibilities| to find the combination of labeled variables that suits every single row and column. The Rrows variable will hold the list of lists labeled with the combination that fulfilled all the restrictions. 
+
+	\begin{figure}[h]
+	\centering
+	\includegraphics[height=1.8cm]{getPossibilities.png}
+	\caption{The getPossibilities predicate.}
+	\label{getPossibilities}
+	\end{figure}
+
+\newpage
 \section{Solution Presentation}
 
 	Initially the board is displayed as an empty board (Figure \ref{empty}) with the restrictions on the top and right. 
@@ -196,11 +218,10 @@ If there are no numbers in a certain line or column it means that there are no r
 
 	The \verb|displayBoard| predicate is responsible for drawing the board and the white restrictions. It calls \verb|displayLine| which calls \verb|countLines| and \verb|writeLine|. These draw the lines that look like this: '-----'. Afterwards, the \verb|writeDashes| predicate is called. It resorts to other predicates such as \verb|displayBoardElem| which gets the board element to display and writes it between the '|'. Following this, the \verb|writeWhiteRes| predicate is called. Resorting to \verb|writeElement|, it writes the numbers of the resctrictions for the white squares.
 
-
 \newpage
 \section{Results}
 
-	The runtime is only affected when the size of the board is 7 or higher. Any size up to 7 gives a medium runtime of zero. After 7 the runtime rises exponentially. The runing time also depends on the problem. There are problems that prove to be more of a challenge and the restrictions take longer to implement. This leads to different runtimes in boards of the same size. The problems with restrictions numbers as high as the board size are easier to solve. For example for a board of size 10 if a line has a restriction of 10 the runtime is almost zero. This would differ from the time it takes to find the solution for a board of the same size whithout such a restriction. One of the hardest tested problems gave a runtime of 21000. The puzzles found on the website are resolved with a runtime of zero independently of the size. The random puzzles can have higher difficulties which leads to higher runtimes. After the size 10, with random puzzles, the runtime is too high and not documented. As seen in Figure \ref{runtimeHigh} the values rise abruptly after size 9. The line on the background represents the trendline for the runtimes. 
+	The runtime is only affected when the size of the board is 7 or higher. Any size up to 7 gives a medium runtime of zero. After 7 the runtime rises exponentially. The runing time also depends on the problem. There are problems that prove to be more of a challenge and the restrictions take longer to implement. This leads to different runtimes in boards of the same size. The problems with restriction's numbers as high as the board size are easier to solve. For example for a board of size 10 if a line has a restriction of 10 the runtime is almost zero. This would differ from the time it takes to find the solution for a board of the same size whithout such a restriction. One of the hardest tested problems gave a runtime of 21000. The puzzles found on the website are resolved with a runtime of zero independently of the size. The random puzzles can have higher difficulties which leads to higher runtimes. After the size 10, with random puzzles, the runtime regists values higher than 41000. As seen in Figure \ref{runtimeHigh} the values rise abruptly after size 9. The line on the background represents the trendline for the runtimes. 
 
 	\begin{figure}[h!]
 	\centering
@@ -219,9 +240,9 @@ If there are no numbers in a certain line or column it means that there are no r
 
 \newpage
 \section{Conclusions and Future Work}
-
-
-\section{References}
+	
+	To sum up, the results prove to be in a certain way inconclusive since the runtime changes according to the puzzle. This could be due to many reasons which difficults the task of boosting the efficiency. The dynamic creation of the board could be bettered (instead of being random).
+	\par The group feels that this project had a very high level of difficulty. The implementation proved to be a gruelling task and problems arised as the problem was deepened. Despite that, the developed solution fulfilled the objectives although it could be bettered. The efficiency is also an issue to dive into. Considering all paradigms, the group is satisfied with the developed work and looks forward to apply the gained experience and knowledge as a programmer.
 
 \begin{thebibliography}{2}
 
@@ -229,15 +250,32 @@ If there are no numbers in a certain line or column it means that there are no r
 
 \bibitem{url} Clpfd Documentation, \url{https://sicstus.sics.se/sicstus/docs/4.1.0/html/sicstus/lib_002dclpfd.html}
 
+\bibitem{url} Clpfd Manual, \url{https://sicstus.sics.se/sicstus/docs/3.7.1/html/sicstus_33.html}
+
 \end{thebibliography}
 
 
 \section{Annex}
 
-\begin{equation}
-  \psi (u) = \int_{o}^{T} \left[\frac{1}{2}
-  \left(\Lambda_{o}^{-1} u,u\right) + N^{\ast} (-u)\right] dt \;  .
-\end{equation}
+	\begin{figure}[h!]
+	\centering
+	\includegraphics[height=4.0cm]{solutions.png}
+	\caption{The solution predicate.}
+	\label{solutionsPred}
+	\end{figure}
 
+	\begin{figure}[h!]
+	\centering
+	\includegraphics[height=4.0cm]{applyRestrictions.png}
+	\caption{The predicate that applys restrictions.}
+	\label{applyRest}
+	\end{figure}
+
+	\begin{figure}[h!]
+	\centering
+	\includegraphics[height=4.0cm]{applySingle.png}
+	\caption{The predicate that restricts each line.}
+	\label{applySingle}
+	\end{figure}
 
 \end{document}

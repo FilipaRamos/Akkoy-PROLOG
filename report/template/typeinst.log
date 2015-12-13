@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.15 (MiKTeX 2.9 64-bit) (preloaded format=pdflatex 2015.10.8)  13 DEC 2015 00:57
+This is pdfTeX, Version 3.14159265-2.6-1.40.15 (MiKTeX 2.9 64-bit) (preloaded format=pdflatex 2015.10.8)  13 DEC 2015 17:21
 entering extended mode
 **"C:/Users/utilizador/Documents/Universidade/PLOG/Projeto II/Akkoy-PROLOG/repo
 rt/template/typeinst.tex"
@@ -227,6 +227,9 @@ Package: url 2013/09/16  ver 3.4  Verb mode for urls, etc.
 
 LaTeX Warning: Label `url' multiply defined.
 
+
+LaTeX Warning: Label `url' multiply defined.
+
 )
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 32.
 LaTeX Font Info:    ... okay on input line 32.
@@ -279,91 +282,147 @@ File: solucaoExemplo.png Graphic file (type png)
 Package pdftex.def Info: solucaoExemplo.png used on input line 100.
 (pdftex.def)             Requested size: 158.91138pt x 176.407pt.
 
-[2 <./puzzleExemplo.png> <./solucaoExemplo.png>]
-Overfull \hbox (2.98824pt too wide) in paragraph at lines 165--166
+[2 <./puzzleExemplo.png> <./solucaoExemplo.png>] [3]
+Overfull \hbox (2.98824pt too wide) in paragraph at lines 166--167
 \OT1/cmr/m/n/10 The la-bel-ing is called with an empty list of op-tions (same a
 s [left-most,step,up,all]).
  []
 
-[3] <empty.png, id=25, 161.403pt x 122.25674pt>
-File: empty.png Graphic file (type png)
- <use empty.png>
-Package pdftex.def Info: empty.png used on input line 173.
-(pdftex.def)             Requested size: 187.82607pt x 142.26378pt.
+<possibilities.png, id=25, 86.724pt x 51.7935pt>
+File: possibilities.png Graphic file (type png)
+ <use possibilities.png>
+Package pdftex.def Info: possibilities.png used on input line 174.
+(pdftex.def)             Requested size: 119.11417pt x 71.13188pt.
 
-<displayFinal.png, id=26, 161.403pt x 122.25674pt>
-File: displayFinal.png Graphic file (type png)
- <use displayFinal.png>
-Package pdftex.def Info: displayFinal.png used on input line 182.
-(pdftex.def)             Requested size: 187.82607pt x 142.26378pt.
+Overfull \hbox (29.76451pt too wide) in paragraph at lines 179--180
+\OT1/cmr/m/n/10 able which is use-ful for the []\OT1/cmtt/m/n/10 solutions \OT1
+/cmr/m/n/10 pred-i-cate. This pred-i-cate uses []\OT1/cmtt/m/n/10 getPossibilit
+ies
+ []
+
+<getPossibilities.png, id=26, 255.95625pt x 57.21375pt>
+File: getPossibilities.png Graphic file (type png)
+
+<use getPossibilities.png>
+Package pdftex.def Info: getPossibilities.png used on input line 183.
+(pdftex.def)             Requested size: 229.12822pt x 51.21504pt.
 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-<runtime.png, id=27, 208.3785pt x 22.8855pt>
+[4 <./possibilities.png>] <empty.png, id=31, 211.992pt x 182.48175pt>
+File: empty.png Graphic file (type png)
+
+<use empty.png>
+Package pdftex.def Info: empty.png used on input line 195.
+(pdftex.def)             Requested size: 165.27869pt x 142.26378pt.
+ <displayFinal.png, id=32, 199.34476pt x 166.221pt>
+File: displayFinal.png Graphic file (type png)
+
+<use displayFinal.png>
+Package pdftex.def Info: displayFinal.png used on input line 204.
+(pdftex.def)             Requested size: 170.6149pt x 142.26378pt.
+
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+<runtime.png, id=33, 208.3785pt x 22.8855pt>
 File: runtime.png Graphic file (type png)
  <use runtime.png>
-Package pdftex.def Info: runtime.png used on input line 192.
+Package pdftex.def Info: runtime.png used on input line 214.
 (pdftex.def)             Requested size: 207.26193pt x 22.76228pt.
 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-[4 <./empty.png>] <runtimeHigh.png, id=32, 289.68225pt x 174.05025pt>
+[5 <./getPossibilities.png> <./empty.png>]
+<runtimeHigh.png, id=39, 289.68225pt x 174.05025pt>
 File: runtimeHigh.png Graphic file (type png)
-
-<use runtimeHigh.png>
-Package pdftex.def Info: runtimeHigh.png used on input line 207.
+ <use runtimeHigh.png>
+Package pdftex.def Info: runtimeHigh.png used on input line 228.
 (pdftex.def)             Requested size: 284.13419pt x 170.71652pt.
 
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-<runtimeBest.png, id=33, 289.68225pt x 174.05025pt>
+<runtimeBest.png, id=40, 289.68225pt x 174.05025pt>
 File: runtimeBest.png Graphic file (type png)
  <use runtimeBest.png>
-Package pdftex.def Info: runtimeBest.png used on input line 215.
+Package pdftex.def Info: runtimeBest.png used on input line 236.
 (pdftex.def)             Requested size: 284.13419pt x 170.71652pt.
 
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-[5 <./displayFinal.png> <./runtime.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 230--231
+[6 <./displayFinal.png> <./runtime.png>] [7 <./runtimeHigh.png> <./runtimeBest.
+png>]
+Underfull \hbox (badness 10000) in paragraph at lines 251--252
 []\OT1/cmr/m/n/9 Clpfd Doc-u-men-ta-tion, $\OT1/cmtt/m/n/9 https : / / sicstus 
 . sics . se / sicstus / docs / 4 . 1 . 0 / html /$
  []
 
-[6 <./runtimeHigh.png> <./runtimeBest.png>] [7] (typeinst.aux)
+
+Underfull \hbox (badness 2418) in paragraph at lines 253--254
+[]\OT1/cmr/m/n/9 Clpfd Man-ual, $\OT1/cmtt/m/n/9 https : / / sicstus . sics . s
+e / sicstus / docs / 3 . 7 . 1 / html / sicstus _$
+ []
+
+<solutions.png, id=50, 369.7815pt x 139.11975pt>
+File: solutions.png Graphic file (type png)
+ <use solutions.png>
+Package pdftex.def Info: solutions.png used on input line 262.
+(pdftex.def)             Requested size: 302.51183pt x 113.81102pt.
+
+<applyRestrictions.png, id=51, 504.08325pt x 138.5175pt>
+File: applyRestrictions.png Graphic file (type png)
+
+<use applyRestrictions.png>
+Package pdftex.def Info: applyRestrictions.png used on input line 269.
+(pdftex.def)             Requested size: 414.17395pt x 113.81102pt.
+
+Overfull \hbox (67.05042pt too wide) in paragraph at lines 269--270
+ [][] 
+ []
+
+<applySingle.png, id=52, 514.3215pt x 136.71075pt>
+File: applySingle.png Graphic file (type png)
+ <use applySingle.png>
+Package pdftex.def Info: applySingle.png used on input line 276.
+(pdftex.def)             Requested size: 428.1895pt x 113.81102pt.
+
+Overfull \hbox (81.06596pt too wide) in paragraph at lines 276--277
+ [][] 
+ []
+
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+[8 <./solutions.png> <./applyRestrictions.png>] [9 <./applySingle.png>]
+(typeinst.aux)
 
 LaTeX Warning: There were multiply-defined labels.
 
  ) 
 Here is how much of TeX's memory you used:
- 2324 strings out of 493698
- 30886 string characters out of 3144397
- 96216 words of memory out of 3000000
- 5613 multiletter control sequences out of 15000+200000
+ 2354 strings out of 493698
+ 31483 string characters out of 3144397
+ 96259 words of memory out of 3000000
+ 5638 multiletter control sequences out of 15000+200000
  11293 words of font info for 44 fonts, out of 3000000 for 9000
  1025 hyphenation exceptions out of 8191
- 42i,6n,26p,1258b,347s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 42i,5n,26p,1261b,347s stack positions out of 5000i,500n,10000p,200000b,50000s
 <C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbx10.pfb><C:/Pr
 ogram Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbx12.pfb><C:/Program Fi
 les/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbx9.pfb><C:/Program Files/MiKTe
-X 2.9/fonts/type1/public/amsfonts/cm/cmex10.pfb><C:/Program Files/MiKTeX 2.9/fo
-nts/type1/public/amsfonts/cm/cmmi10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type
-1/public/amsfonts/cm/cmmi7.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/
-amsfonts/cm/cmr10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/
-cm/cmr7.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr9.pf
-b><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Pr
-ogram Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy7.pfb><C:/Program Fil
-es/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmti10.pfb><C:/Program Files/MiKTe
-X 2.9/fonts/type1/public/amsfonts/cm/cmti9.pfb><C:/Program Files/MiKTeX 2.9/fon
-ts/type1/public/amsfonts/cm/cmtt10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1
-/public/amsfonts/cm/cmtt9.pfb>
-Output written on typeinst.pdf (7 pages, 282224 bytes).
+X 2.9/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Program Files/MiKTeX 2.9/fon
+ts/type1/public/amsfonts/cm/cmr9.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/p
+ublic/amsfonts/cm/cmti10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/am
+sfonts/cm/cmti9.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm
+/cmtt10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmtt9.p
+fb>
+Output written on typeinst.pdf (9 pages, 297729 bytes).
 PDF statistics:
- 99 PDF objects out of 1000 (max. 8388607)
+ 91 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
- 36 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 61 words of extra memory for PDF output out of 10000 (max. 10000000)
 

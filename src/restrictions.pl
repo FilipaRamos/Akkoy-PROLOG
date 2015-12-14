@@ -196,7 +196,7 @@ apply_inverted([Elem|Elems], [I|Is], InvertedColor):-
 	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	%% FIND THE SOLUTION FOR THE PUZZLE
 
-solutions(Rcolumns, Rrows, Rows) :- statistics(runtime, _RestrictionsRunTime),
+solutions(Rcolumns, Rrows, NewBoard) :- statistics(runtime, _RestrictionsRunTime),
 						!,
 						length(Rcolumns, N),
 						gen_matrix(N, Board),
@@ -207,6 +207,7 @@ solutions(Rcolumns, Rrows, Rows) :- statistics(runtime, _RestrictionsRunTime),
 						apply_all_restrictions(N, Rows, Rrows, 0),
 						append_board(Board, Vars),
 
+						transpose(Board, NewBoard),
 						domain(Vars, 0,1),
 						once(labeling([],Vars)).
 

@@ -209,6 +209,7 @@ solutions(Rcolumns, Rrows, NewBoard) :- statistics(runtime, _RestrictionsRunTime
 
 						transpose(Board, NewBoard),
 						domain(Vars, 0,1),
+				write(Vars),nl,
 						once(labeling([],Vars)).
 
 	%%%%%%%%%%%%%%%%%
